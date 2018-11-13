@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import GameLink from './GameLink';
 
 class Home extends Component {
-        render() {
+    render() {
+        return (
             <div className="home">
                 <h2>Nonsense</h2>
                 <p>
@@ -10,7 +11,8 @@ class Home extends Component {
             </p>
                 <GameLink class="drawing-game" link="" img="" />
             </div>
-        }
+        )
     }
+}
 
 export default Home;
