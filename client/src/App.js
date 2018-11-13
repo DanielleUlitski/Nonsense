@@ -5,9 +5,11 @@ import { inject } from 'mobx-react';
 import Home from './components/Home';
 import History from './components/History';
 import GameScreen from './components/GameScreen';
+import Login from './components/Login';
 
 @inject(allStores => ({
-  logOut: allStores.usersStore.logOut
+  logOut: allStores.usersStore.logOut,
+  currentUser: allStores.usersStore.currentUser
 }))
 
 class App extends Component {
@@ -24,6 +26,8 @@ class App extends Component {
             </li>
             <button className="navbatBtn" onClick={this.props.logOut}>Log out</button>
           </ul>
+
+          {!this.props.currentUser ? <Login/> : null }
 
           <Route exact path="/" component={Home} />
           <Route exact path="/history" component={History} />

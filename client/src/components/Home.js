@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import GameLink from './GameLink';
-import { Link }
 
 class Home extends Component {
         render() {
