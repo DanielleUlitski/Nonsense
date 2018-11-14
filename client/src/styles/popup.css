@@ -19,3 +19,30 @@
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
 }
+
+.input-field {
+    padding-bottom: 5px;
+    /* font-size: 1.2em; */
+}
+
+.modal-btn {
+    background-color: #89F453;
+    border: transparent;
+    padding: 5px 15px;
+    border-radius: 13px;
+}
+
+.modal-btn:active {
+    background-color: #65C138;
+}
+
+.input-field input {
+    border: transparent;
+    border-bottom: solid lightgray 1px;
+    font-size: 1.1em;
+}
+
+.input-field input:focus {
+    box-shadow: transparent;
+    outline: transparent;
+}
