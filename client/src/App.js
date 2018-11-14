@@ -27,8 +27,7 @@ class App extends Component {
             <button className="navbatBtn" onClick={this.props.logOut}>Log out</button>
           </ul>
 
-          {!this.props.currentUser ? <Login/> : null }
-
+          <Login />
           <Route exact path="/" component={Home} />
           <Route exact path="/history" component={History} />
           <Route exact path="/game/:gameType" render={({ match }) => <GameScreen gameType={match} />} />
