@@ -18,7 +18,7 @@ class Login extends Component {
     componentDidMount() {
         this.props.socket.on("login", (user) => {
             console.log(user);
-            this.props.loginValidate(user);
+            this.props.logIn(user);
         })
 
         this.props.socket.on("wrong user", () => {
@@ -42,7 +42,10 @@ class Login extends Component {
     }
 
     signUp = () => {
-        if (this.confirmPassword !== this.singupPassword) return;
+        if (this.confirmPassword !== this.singupPassword) {
+            this.currentMessage = "password needs to be repeated!";
+            return;
+        }
         this.props.signup({
             userName: this.singupUsername,
             password: this.singupPassword

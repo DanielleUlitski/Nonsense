@@ -9,18 +9,21 @@ class UsersStore {
 
     @action signUp = (user) => {
         axios.post('/api/user', user).then((user) => {
-            if(!user) return console.log("username exists!");
-            this.validateLogin(user);
+            if (!user.data) {
+                console.log("username exists!");
+            } else {
+                this.validateLogin(user.data);
+            }
         })
     }
 
-    validateLogin = (user) => {
+    @action validateLogin = (user) => {
         this.socket.emit('validateLogin', user, this.socket.id);
     }
 
     @action logIn = (user) => {
         this.currentUser = user;
-        if( this.currentUser ) {
+        if (this.currentUser) {
             console.log('lol');
         }
     }
