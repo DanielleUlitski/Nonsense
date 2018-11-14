@@ -18,8 +18,22 @@ class Login extends Component {
         this.props.socket.on("login", (user) => {
             this.props.logIn(user);
         })
+
+        this.props.socket.on("wrong user", ()=>{
+            this.currentMessage = "wrong Username or Password!";
+        })
+
+        //test
+        this.props.socket.on("firstemit", (socket)=>{
+            console.log(socket);
+        })
     }
 
+    displayMessage = () => {
+        return this.currentMessage
+    }
+
+    @observable currentMessage = "";
     @observable loginUsername = "";
     @observable loginPassword = "";
     @observable singupUsername = "";
@@ -60,6 +74,7 @@ class Login extends Component {
                         <div className="input-field">Password <br /><input type="password" name="loginPassword" value={this.loginPassword} onChange={this.handleInput} /></div>
                         <button className="modal-btn" onClick={this.login} >Sign In</button>
                     </span>
+                    <span>{this.displayMessage()}</span>
                     <span>
                         <h4>Sign up:</h4>
                         <div className="input-field">Username <br /><input type="text" name="singupUsername" value={this.singupUsername} onChange={this.handleInput} /></div>
