@@ -5,7 +5,7 @@ class GameLink extends Component {
     render() {
         return (
             <p className={this.props.class}>
-                <Link to={this.props.link}><img src={this.props.img} /></Link>
+                <Link to={this.props.link}><button>{this.props.gameType}</button></Link>
             </p>
         )
     }

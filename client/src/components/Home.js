@@ -9,7 +9,8 @@ class Home extends Component {
                 <p>
                     This is an app with all the nonsense you need,
             </p>
-                <GameLink class="drawing-game" link="" img="" />
+                <GameLink class="drawing-game" link="/game/drawing" gameType="drawing" />
+                <GameLink class="drawing-game" link="/game/story" gameType="story" />
             </div>
         )
     }
