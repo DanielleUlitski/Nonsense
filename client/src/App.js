@@ -19,20 +19,20 @@ class App extends Component {
       <Router>
         <div className="App">
           <ul id="navbar">
-            <li className="navbatBtn">
+            <li className="navbar-btn">
               <Link to="/">HOME</Link>
             </li>
-            <li className="navbatBtn">
+            <li className="navbar-btn">
               <Link to="/history">HISTORY</Link>
             </li>
-            <button className="navbatBtn" onClick={this.props.logOut}>Log out</button>
+            <li className="navbar-btn-logout" onClick={this.props.logOut}>Log out</li>
           </ul>
 
           <Login />
           <Route exact path="/" component={Home} />
           <Route exact path="/history" component={History} />
-          <Route exact path="/game/:gameType" render={({ match }) => <GameScreen gameType={match} />} />
-          <InviteModal />
+          <Route exact path="/game/:gameType" render={({ match }) => <GameScreen match={match} />} />
+
         </div>
       </Router>
     );

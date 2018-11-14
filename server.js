@@ -14,6 +14,7 @@ const usersAPI = require('./routes/usersAPI')
 const storyAPI = require('./routes/storyAPI')
 const drawingAPI = require('./routes/drawingAPI')
 const users = [];
+const rooms = { "Lobby": [] };
 const User = require('./models/UserModel')
 const Drawing = require('./models/DrawingModel')
 const Story = require('./models/StoryModel')
@@ -36,9 +37,8 @@ const findWithAttr = (array, attr, value) => {
 }
 
 io.sockets.on('connection', (socket) => {
-  // console.log(socket);
+
   socket.on('validateLogin', (user, socketId) => {
-    console.log(user.password);
     User.findOne({ $and: [{ userName: user.userName }, { password: user.password }] }).exec((err, user) => {
       if (err) throw new Error(err);
       if (!user) {
@@ -46,37 +46,55 @@ io.sockets.on('connection', (socket) => {
       } else {
         users.push({
           userName: user.userName,
-          sessionId: socketId,
-        }),
-          socket.user = user;
+          session: socketId,
+        });
+        socket.user = user;
         socket.room = 'Lobby';
-        socket.leaveAll();
         socket.join('Lobby');
+        rooms['Lobby'].push(socket.user.userName);
         socket.session = socketId;
-        console.log(user);
         socket.emit('login', user);
       }
     })
   })
 
-  socket.on('sendInvite', (user) => {
+  socket.on('newRoom', (newRoom) => {
+    console.log(newRoom);
+    socket.leave('Lobby');
+    rooms['Lobby'].splice(rooms['Lobby'].indexOf(socket.user.userName), 1);
+    socket.room = newRoom;
+    rooms[newRoom] = [];
+    rooms[newRoom].push(socket.user.userName);
+    socket.join(newRoom);
+  })
+
+  socket.on('sendInvite', (user, roomType) => {
     User.findOne({ userName: user }).exec((err, foundUser) => {
       if (err) throw new Error(err);
       if (!foundUser) {
         socket.emit("usernotfound")
       } else {
-        let index = findWithAttr(users, userName, foundUser.userName);
-        if (index) {
-          io.to(users[index].sessionId).emit('gotInvite', )
+        let index = findWithAttr(users, "userName", foundUser.userName);
+        if (index >= 0) {
+          let socketId = users[index].session;
+          console.log(socket.room);
+          io.to(`${socketId}`).emit('gotInvite', socket.user.userName, socket.room, roomType);
         }
       }
     })
   })
 
   socket.on('joinRoom', (userName, roomId) => {
-    socket.leaveAll();
+    socket.leave('Lobby');
     socket.room = roomId;
+    rooms['Lobby'].splice(rooms['Lobby'].indexOf(socket.user.userName), 1);
     socket.join(roomId);
-    io.sockets.in(roomId).emit('userJoined', socket.userName, socket.sessionId);
+    rooms[roomId].push(socket.user.userName);
+    io.sockets.in(roomId).emit('userJoined', rooms[roomId]);
+    socket.emit('loadRoom', socket.room)
+  })
+
+  socket.on('updateRoom', (x, y) => {
+    io.sockets.in(socket.room).emit('incomingUpdates', x, y);
   })
 })

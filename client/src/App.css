@@ -1,0 +1,40 @@
+.navbar-btn {
+    float: left;
+    clear: none;
+    margin-right: 13px;
+}
+
+.navbar-btn-logout {
+    color: white;
+    list-style-type: none;
+}
+
+.navbar-btn-logout:hover {
+    cursor: pointer;
+}
+
+#navbar li a {
+    text-decoration: none;
+    color: white;
+}
+
+#navbar {
+    background-color: black;
+    margin-top: 0px;
+    height: 25px;
+}
+
+.image-link {
+    width: 150px;
+    height: 150px;
+}
+
+.game-title {
+    font-size: 1.2em;
+    padding-left: 26%;
+}
+
+.game-link {
+    float: left;
+    clear: none;
+}
