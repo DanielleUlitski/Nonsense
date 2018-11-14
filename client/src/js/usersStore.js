@@ -1,6 +1,6 @@
 import { observable, action } from "mobx";
 import axios from 'axios'
-import io from 'socket.io'
+import io from 'socket.io-client'
 
 class UsersStore {
     @observable currentUser = null;
@@ -20,6 +20,9 @@ class UsersStore {
 
     @action logIn = (user) => {
         this.currentUser = user;
+        if( this.currentUser ) {
+            console.log('lol');
+        }
     }
 }
 

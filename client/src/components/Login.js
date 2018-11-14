@@ -6,9 +6,10 @@ import '../styles/popup.css';
 
 @inject(allStores => ({
     loginValidate: allStores.usersStore.validateLogin,
-    singup: allStores.usersStore.singUp,
+    signup: allStores.usersStore.signUp,
     socket: allStores.usersStore.socket,
-    logIn: allStores.usersStore.logIn
+    logIn: allStores.usersStore.logIn,
+    currentUser: allStores.usersStore.currentUser
 
 }))
 @observer
@@ -16,16 +17,12 @@ class Login extends Component {
 
     componentDidMount() {
         this.props.socket.on("login", (user) => {
-            this.props.logIn(user);
+            console.log(user);
+            this.props.loginValidate(user);
         })
 
-        this.props.socket.on("wrong user", ()=>{
+        this.props.socket.on("wrong user", () => {
             this.currentMessage = "wrong Username or Password!";
-        })
-
-        //test
-        this.props.socket.on("firstemit", (socket)=>{
-            console.log(socket);
         })
     }
 
@@ -46,7 +43,7 @@ class Login extends Component {
 
     signUp = () => {
         if (this.confirmPassword !== this.singupPassword) return;
-        this.props.singup({
+        this.props.signup({
             userName: this.singupUsername,
             password: this.singupPassword
         });
@@ -65,7 +62,7 @@ class Login extends Component {
 
     render() {
         return (
-            <div style={this.props.currentUser ? "visibility: hidden" : "visibility: visible"} className="popup">
+            <div style={{ display: this.props.currentUser ? "none" : "block" }} className="popup">
                 <div className="modal-content">
                     <h2>Welcome to the NONSENSE land</h2>
                     <span>

@@ -3,16 +3,19 @@ const router = express.Router()
 
 const User = require('../models/UserModel')
 
-router.post('', (req, res) => {
-    let user = req.body.user;
-    User.findOne({ userName: user.userName }).exec((err, user) => {
+router.post('/api/user', (req, res) => {
+    console.log(req.body);
+    let user = req.body;
+    User.findOne({ userName: user.userName }).exec((err, data) => {
         if (err) throw new Error(err);
-        if (user) res.send(user)
+        if (data) {
+            res.send(data)
+        } else {
+            newUser = new User(user);
+            newUser.save()
+            res.send(user);
+        }
     })
-    user = new User(user);
-    user.save().exec(()=>{
-        res.send(user);
-    });
 })
 
 module.exports = router
