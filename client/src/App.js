@@ -5,6 +5,7 @@ import { inject } from 'mobx-react';
 import Home from './components/Home';
 import History from './components/History';
 import GameScreen from './components/GameScreen';
+import InviteModal from './components/InviteModal';
 import Login from './components/Login';
 
 @inject(allStores => ({
@@ -31,7 +32,7 @@ class App extends Component {
           <Route exact path="/" component={Home} />
           <Route exact path="/history" component={History} />
           <Route exact path="/game/:gameType" render={({ match }) => <GameScreen gameType={match} />} />
-
+          <InviteModal />
         </div>
       </Router>
     );

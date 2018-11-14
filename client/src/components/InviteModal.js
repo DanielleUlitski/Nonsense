@@ -33,7 +33,7 @@ class Invite extends Component {
 
     render() {
         return (
-            <div style={this.pending ? "visibility: visible" : "visibility: hidden"} className="popup">
+            <div style={{ visibility: this.pending ? "visible" : "hidden" }} className="popup">
                 <div className="modal-content">
                     <span>{this.invite.userName} Has invited you!</span>
                     <button onClick={this.accept}>Accept</button>

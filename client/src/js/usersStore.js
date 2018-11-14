@@ -9,8 +9,9 @@ class UsersStore {
 
     @action signUp = (user) => {
         axios.post('/api/user', user).then((user) => {
+            console.log(user.data);
             if (!user.data) {
-                console.log("username exists!");
+                console.log("username already in use!");
             } else {
                 this.validateLogin(user.data);
             }
@@ -23,9 +24,6 @@ class UsersStore {
 
     @action logIn = (user) => {
         this.currentUser = user;
-        if (this.currentUser) {
-            console.log('lol');
-        }
     }
 }
 

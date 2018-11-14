@@ -26,6 +26,15 @@ app.use('/api/story', storyAPI);
 app.use('/api/drawing', drawingAPI);
 app.use(express.static(path.join(__dirname, './client/build')))
 
+const findWithAttr = (array, attr, value) => {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i][attr] === value) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 io.sockets.on('connection', (socket) => {
   // console.log(socket);
   socket.on('validateLogin', (user, socketId) => {
@@ -48,5 +57,26 @@ io.sockets.on('connection', (socket) => {
         socket.emit('login', user);
       }
     })
+  })
+
+  socket.on('sendInvite', (user) => {
+    User.findOne({ userName: user }).exec((err, foundUser) => {
+      if (err) throw new Error(err);
+      if (!foundUser) {
+        socket.emit("usernotfound")
+      } else {
+        let index = findWithAttr(users, userName, foundUser.userName);
+        if (index) {
+          io.to(users[index].sessionId).emit('gotInvite', )
+        }
+      }
+    })
+  })
+
+  socket.on('joinRoom', (userName, roomId) => {
+    socket.leaveAll();
+    socket.room = roomId;
+    socket.join(roomId);
+    io.sockets.in(roomId).emit('userJoined', socket.userName, socket.sessionId);
   })
 })
