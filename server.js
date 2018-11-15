@@ -44,18 +44,37 @@ io.sockets.on('connection', (socket) => {
       if (!user) {
         socket.emit("wrong user");
       } else {
-        users.push({
-          userName: user.userName,
-          session: socketId,
-        });
-        socket.user = user;
-        socket.room = 'Lobby';
-        socket.join('Lobby');
-        rooms['Lobby'].push(socket.user.userName);
-        socket.session = socketId;
-        socket.emit('login', user);
+        if (findWithAttr(users, 'userName', user.userName) !== -1) {
+          socket.emit('you are already logged In')
+        } else {
+          users.push({
+            userName: user.userName,
+            session: socketId,
+          });
+          socket.user = user;
+          socket.room = 'Lobby';
+          socket.join('Lobby');
+          rooms['Lobby'].push(socket.user.userName);
+          socket.session = socketId;
+          socket.emit('login', user);
+        }
       }
     })
+  })
+
+  socket.on('disconnect', () => {
+    if (socket.user) {
+      users.splice(findWithAttr(users, 'userName', socket.user.userName), 1);
+    }
+  })
+
+  socket.on('logOut', () => {
+    users.splice(findWithAttr(users, 'userName', socket.user.userName), 1);
+    if (socket.room === 'Lobby') {
+      rooms['Lobby'].splice(rooms['Lobby'].indexOf(socket.userName), 1);
+    }
+    socket.leaveAll();
+    socket.room = undefined;
   })
 
   socket.on('newRoom', (newRoom) => {

@@ -64,7 +64,7 @@ class GameScreen extends Component {
                     </div>
                 </div>
                 <div className="game-board">
-                    {this.props.match.params.gameType === "drawing" ? <GameCanvas style={{ display: this.gameinProgress ? "block" : "none" }} /> : <StoryScreen style={{ visibility: this.gameinProgress ? "visibile" : "hidden" }} />}
+                    {this.props.match.params.gameType === "drawing" ? <GameCanvas gameinProgress={this.gameinProgress} /> : <StoryScreen gameinProgress={this.gameinProgress} />}
                 </div>
                 <SendInvite bool={this.bool} inv={this.invite} />
             </div>

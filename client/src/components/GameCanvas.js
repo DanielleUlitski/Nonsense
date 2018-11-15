@@ -80,7 +80,7 @@ class GameCanvas extends Component {
 
     render() {
         return (
-            <canvas onTouchMove={this.mouseMove} onTouchEnd={this.mouseUp} onTouchStart={this.mouseDown} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} onMouseDown={this.mouseDown} ref="canvas" />
+            <canvas style={{ display: this.props.gameinProgress ? "block" : "none" }} onTouchMove={this.mouseMove} onTouchEnd={this.mouseUp} onTouchStart={this.mouseDown} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} onMouseDown={this.mouseDown} ref="canvas" />
         );
     }
 }
