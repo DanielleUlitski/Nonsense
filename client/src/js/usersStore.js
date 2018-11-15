@@ -55,7 +55,7 @@ class UsersStore {
     }
 
     newDrawing = () => {
-        axios.post('/api/drawing/opendrawing').then((drawing) => {
+        axios.post('/api/drawing/opendrawing', {userName: this.currentUser.userName}).then((drawing) => {
             console.log(drawing);
             this.socket.emit('newRoom', drawing.data._id);
         })

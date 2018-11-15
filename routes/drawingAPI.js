@@ -15,9 +15,9 @@ router.get('/:userName', (req, res) => {
 
 router.post('/opendrawing', (req, res) => {
     let newDrawing = new Drawing({})
+    newDrawing.artists.push(req.body.userName);
     newDrawing.save((err, drawing) => {
         if (err) throw new Error(err);
-        console.log(drawing)
         res.send(drawing)
     })
 })

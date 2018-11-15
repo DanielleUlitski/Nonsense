@@ -35,13 +35,12 @@ class InviteModal extends Component {
     }
 
     @action accept = () => {
-        this.props.socket.emit('joinRoom', this.invite.userName, this.invite.room);
+        this.props.socket.emit('joinRoom', this.props.gameType, this.invite.room);
         this.pending = false;
         this.invite = {
             userName: null,
             room: null
         }
-        window.location.href += 'game/drawing'
     }
 
     @action decline = () => {

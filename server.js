@@ -84,7 +84,15 @@ io.sockets.on('connection', (socket) => {
     })
   })
 
-  socket.on('joinRoom', (userName, roomId) => {
+  socket.on('joinRoom', (roomType, roomId) => {
+    switch (roomType) {
+      case "drawing":
+        Drawing.findById(roomId, (err, room) => {
+          if (err) throw new Error(err);
+          room.artists.push(socket.user.userName);
+        })
+    }
+
     socket.leave('Lobby');
     socket.room = roomId;
     rooms['Lobby'].splice(rooms['Lobby'].indexOf(socket.user.userName), 1);

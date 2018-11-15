@@ -15,6 +15,7 @@ class GameLink extends Component {
         return (
             <div className="game-link">
                 <span className="game-title">{this.props.gameType}</span> <br />
+                {console.log(this.props.link)}
                 <Link onClick={this.newRoom} to={this.props.link}><img className="image-link" src={this.props.src} /></Link>
             </div>
         )
