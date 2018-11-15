@@ -21,8 +21,13 @@ class GameCanvas extends Component {
     @observable yourTurn = true;
 
     componentDidMount() {
-        this.props.socket.on('incomingUpdates', (x, y) => {
-            this.draw(x, y, this.color);
+        const canvas = this.refs.canvas
+        canvas.width = 1024;
+        canvas.height = 1024;
+        canvas.style.width = "712px";
+        canvas.style.height = "712px";
+        this.props.socket.on('incomingUpdates', (x, y, isNewLine) => {
+            this.draw(x, y, this.color, isNewLine);
         })
 
         this.props.socket.on('userJoined', (arr) => {
@@ -30,8 +35,10 @@ class GameCanvas extends Component {
         })
     }
 
-    draw = (x, y, color) => {
+    draw = (x, y, color, newLine) => {
         const ctx = this.refs.canvas.getContext('2d');
+        if (newLine) ctx.moveTo(x, y);
+        console.log(newLine);
         ctx.fillStyle = color;
         ctx.arc(x, y, 1, 0, Math.PI * 2);
         ctx.stroke();
@@ -41,7 +48,7 @@ class GameCanvas extends Component {
         if (!this.yourTurn) return;
         this.getPos(e);
         if (this.pressed) {
-            this.props.update(this.x, this.y);
+            this.props.update(this.x, this.y, false);
             // this.draw(this.x, this.y, this.color);
         }
 
@@ -50,7 +57,7 @@ class GameCanvas extends Component {
     @action mouseDown = (e) => {
         this.pressed = true;
         this.getPos(e)
-        this.props.update(this.x, this.y);
+        this.props.update(this.x, this.y, true);
     }
 
     @action mouseUp = () => {
@@ -58,13 +65,21 @@ class GameCanvas extends Component {
     }
 
     @action getPos = (e) => {
-        this.x = e.clientX;
-        this.y = e.clientY;
+        const canvas = this.refs.canvas;
+        const bounds = canvas.getBoundingClientRect();
+        this.x = e.pageX - bounds.left;
+        this.y = e.pageY - bounds.top;
+
+        this.x /= bounds.width;
+        this.y /= bounds.height;
+
+        this.x *= canvas.width;
+        this.y *= canvas.height;
     }
 
     render() {
         return (
-            <canvas onTouchMove={this.mouseMove} onTouchEnd={this.mouseUp} onTouchStart={this.mouseDown} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} onMouseDown={this.mouseDown} ref="canvas" width={900} height={900} />
+            <canvas onTouchMove={this.mouseMove} onTouchEnd={this.mouseUp} onTouchStart={this.mouseDown} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} onMouseDown={this.mouseDown} ref="canvas" />
         );
     }
 }

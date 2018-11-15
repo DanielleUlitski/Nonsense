@@ -11,8 +11,8 @@ class UsersStore {
 
     @observable gameType = null;
 
-    @action update = (x, y) => {
-        this.socket.emit('updateRoom', x, y);
+    @action update = (x, y, isNewLine) => {
+        this.socket.emit('updateRoom', x, y, isNewLine);
     }
 
     @action getPlayers = (arr) => {
@@ -58,6 +58,7 @@ class UsersStore {
         axios.post('/api/drawing/opendrawing', {userName: this.currentUser.userName}).then((drawing) => {
             console.log(drawing);
             this.socket.emit('newRoom', drawing.data._id);
+            this.socket.emit('updateRoom')
         })
     }
 

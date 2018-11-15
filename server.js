@@ -66,6 +66,7 @@ io.sockets.on('connection', (socket) => {
     rooms[newRoom] = [];
     rooms[newRoom].push(socket.user.userName);
     socket.join(newRoom);
+    socket.emit('userJoined', [socket.user.userName]);
   })
 
   socket.on('sendInvite', (user, roomType) => {
@@ -77,11 +78,14 @@ io.sockets.on('connection', (socket) => {
         let index = findWithAttr(users, "userName", foundUser.userName);
         if (index >= 0) {
           let socketId = users[index].session;
-          console.log(socket.room);
           io.to(`${socketId}`).emit('gotInvite', socket.user.userName, socket.room, roomType);
         }
       }
     })
+  })
+
+  socket.on('enteredRoom', () => {
+
   })
 
   socket.on('joinRoom', (roomType, roomId) => {
@@ -90,6 +94,7 @@ io.sockets.on('connection', (socket) => {
         Drawing.findById(roomId, (err, room) => {
           if (err) throw new Error(err);
           room.artists.push(socket.user.userName);
+          room.save();
         })
     }
 
@@ -102,7 +107,11 @@ io.sockets.on('connection', (socket) => {
     socket.emit('loadRoom', socket.room)
   })
 
-  socket.on('updateRoom', (x, y) => {
-    io.sockets.in(socket.room).emit('incomingUpdates', x, y);
+  socket.on('start', () => {
+    io.sockets.in(socket.room).emit('start');
+  })
+
+  socket.on('updateRoom', (x, y, isNewLine) => {
+    io.sockets.in(socket.room).emit('incomingUpdates', x, y, isNewLine);
   })
 })
