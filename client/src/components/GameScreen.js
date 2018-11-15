@@ -39,16 +39,14 @@ class GameScreen extends Component {
                 {this.gameEnded ? <GameResults /> : null}
                 <h2>LET THE NONSENSE BEGIN!</h2>
                 <div classNane="start-finish">
-                    {this.gameinProgress ?
-                        <button className="finish">FINISH</button> :
-                        <span>
+                    {this.gameinProgress ? <button className="finish">FINISH</button> : <span>
                             <button onClick={this.invite} className="invite" >Invite</button>
-                            <button onClick={this.start()} className="start" >Start</button>
+                            <button onClick={this.start} className="start" >Start</button>
                         </span>
                     }
                 </div>
-                <div className="game-board" style={{ visibility: this.gameinProgress ? "visibile" : "hidden" }}>
-                    {this.props.match.params.gameType === "drawing" ? <GameCanvas /> : <StoryScreen />}
+                <div className="game-board">
+                    {this.props.match.params.gameType === "drawing" ? <GameCanvas style={{ visibility: this.gameinProgress ? "visibile" : "hidden" }} /> : <StoryScreen style={{ visibility: this.gameinProgress ? "visibile" : "hidden" }} />}
                 </div>
                 <div className="players">
                     <h4>PLAYERS:</h4>

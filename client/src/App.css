@@ -1,3 +1,8 @@
+body{
+    /* background-color: blue; */
+    background-image: url("https://media.gettyimages.com/photos/green-watercolor-background-with-splashes-picture-id671880210?b=1&k=6&m=671880210&s=612x612&w=0&h=kSMl05vl_Iw9MCsrSlDgOapEwguEe3s2IpI5SuXyygs=") 
+}
+
 .navbar-btn {
     float: left;
     clear: none;
