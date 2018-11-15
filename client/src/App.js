@@ -5,6 +5,7 @@ import { inject } from 'mobx-react';
 import Home from './components/Home';
 import History from './components/History';
 import GameScreen from './components/GameScreen';
+import InviteModal from './components/InviteModal';
 import Login from './components/Login';
 
 @inject(allStores => ({
@@ -18,13 +19,13 @@ class App extends Component {
       <Router>
         <div className="App">
           <ul id="navbar">
-            <li className="navbatBtn">
+            <li className="navbar-btn">
               <Link to="/">HOME</Link>
             </li>
-            <li className="navbatBtn">
+            <li className="navbar-btn">
               <Link to="/history">HISTORY</Link>
             </li>
-            <button className="navbatBtn" onClick={this.props.logOut}>Log out</button>
+            <li className="navbar-btn-logout" onClick={this.props.logOut}>Log out</li>
           </ul>
 
           <Login />

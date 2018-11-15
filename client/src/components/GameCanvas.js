@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { observable, action } from 'mobx';
 
-// class DrawingGame extends Component {
-//     render() {
-//         <canvas>
-
-//         </canvas>
-//     }
-// }
+@inject(allStores => ({
+    update: allStores.usersStore.update,
+    socket: allStores.usersStore.socket,
+    getPlayers: allStores.usersStore.getPlayers
+}))
 @observer
 class GameCanvas extends Component {
 
@@ -20,21 +18,31 @@ class GameCanvas extends Component {
 
     @observable color = "rgba(0, 0, 0, 1)";
 
+    @observable yourTurn = true;
+
+    componentDidMount() {
+        this.props.socket.on('incomingUpdates', (x, y) => {
+            this.draw(x, y, this.color);
+        })
+
+        this.props.socket.on('userJoined', (arr) => {
+            this.props.getPlayers(arr)
+        })
+    }
+
     draw = (x, y, color) => {
-        console.log(x)
         const ctx = this.refs.canvas.getContext('2d');
         ctx.fillStyle = color;
         ctx.arc(x, y, 1, 0, Math.PI * 2);
-        // ctx.fill();
         ctx.stroke();
     }
 
     mouseMove = (e) => {
-        // debugger;
+        if (!this.yourTurn) return;
         this.getPos(e);
-        console.log(this.pressed);
         if (this.pressed) {
-            this.draw(this.x, this.y, this.color);
+            this.props.update(this.x, this.y);
+            // this.draw(this.x, this.y, this.color);
         }
 
     }
@@ -42,24 +50,16 @@ class GameCanvas extends Component {
     @action mouseDown = (e) => {
         this.pressed = true;
         this.getPos(e)
+        this.props.update(this.x, this.y);
     }
 
     @action mouseUp = () => {
-        console.log('yay')
         this.pressed = false;
     }
 
     @action getPos = (e) => {
-        // debugger;
-        // console.log("works")
-        // if (!e) {
-        //     let e = event;
-        // }
-        // if (e.clientX) {
-        console.log(e)
         this.x = e.clientX;
         this.y = e.clientY;
-        // }
     }
 
     render() {

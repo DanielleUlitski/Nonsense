@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
+import { inject } from 'mobx-react';
 
+@inject(allStores => ({
+    newRoom: allStores.usersStore.newRoom
+}))
 class GameLink extends Component {
+
+    newRoom = () => {
+        this.props.newRoom(this.props.gameType);
+    }
+
     render() {
         return (
-            <p className={this.props.class}>
-                <Link to={this.props.link}><button>{this.props.gameType}</button></Link>
-            </p>
+            <div className="game-link">
+                <span className="game-title">{this.props.gameType}</span> <br />
+                {console.log(this.props.link)}
+                <Link onClick={this.newRoom} to={this.props.link}><img className="image-link" src={this.props.src} /></Link>
+            </div>
         )
     }
 }
