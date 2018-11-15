@@ -24,6 +24,10 @@ class Login extends Component {
         this.props.socket.on("wrong user", () => {
             this.currentMessage = "wrong Username or Password!";
         })
+
+        this.props.socket.on('you are already logged In', () => {
+            this.currentMessage = "this user is already logged in";
+        })
     }
 
     displayMessage = () => {
