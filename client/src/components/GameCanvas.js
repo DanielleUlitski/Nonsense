@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { observable, action } from 'mobx';
+import '../styles/canvas.css'
 
 @inject(allStores => ({
     update: allStores.usersStore.update,

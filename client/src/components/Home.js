@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import GameLink from './GameLink';
 import InviteModal from './InviteModal';
 import { observer, inject } from 'mobx-react';
+import '../styles/home.css'
 
 @inject(allStores => ({
     socket: allStores.usersStore.socket
@@ -18,10 +19,10 @@ class Home extends Component {
     render() {
         return (
             <div className="home">
-                <h2>Nonsense</h2>
-                <p>
+                <h2 className="home-title">Nonsense</h2>
+                <p className="description">
                     This is an app with all the nonsense you need,
-            </p>
+                </p>
                 <GameLink src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQDbEdqKqmQOuY5bTmcVA-sEOHsWFqM_asYBIYEcypabLO5QIo0g" link="/game/drawing" gameType="drawing" />
                 <GameLink src="http://www.thestory.org/sites/default/themes/siteskin/inc/images/podcast-600.png" link="/game/story" gameType="story" />
                 <InviteModal />

@@ -1,3 +1,14 @@
+@font-face {
+    font-family: myFirstFont;
+    src: url('./styles/bilboinc.regular.ttf');
+}
+
+body{
+    background-image: url("https://ak9.picdn.net/shutterstock/videos/20107759/thumb/1.jpg");
+    font-family: myFirstFont;
+    font-size: 1.4em;
+}
+
 .navbar-btn {
     float: left;
     clear: none;
@@ -21,6 +32,7 @@
 #navbar {
     background-color: black;
     margin-top: 0px;
+    margin-bottom: 0px;
     height: 25px;
 }
 

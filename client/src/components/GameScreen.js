@@ -45,21 +45,23 @@ class GameScreen extends Component {
         return (
             <div className="game-screen">
                 {this.gameEnded ? <GameResults /> : null}
-                <h2>LET THE NONSENSE BEGIN!</h2>
-                <div style={{ display: (this.props.currentPlayers[0] === this.props.currentUser.userName) ? "block" : "none" }} classNane="start-finish">
-                    {this.gameinProgress ?
-                        <button className="finish">FINISH</button> :
-                        <span>
-                            <button onClick={this.invite} className="invite" >Invite</button>
-                            <button onClick={this.start} className="start" >Start</button>
-                        </span>
-                    }
-                </div>
-                <div className="players">
-                    <h4>PLAYERS:</h4>
-                    <ul>
-                        {this.props.currentPlayers.map(p => { return <li key={p}>{p}</li> })}
-                    </ul>
+                <div className="game-info">
+                    <h2>LET THE NONSENSE BEGIN!</h2>
+                    <div style={{ display: (this.props.currentPlayers[0] === this.props.currentUser.userName) ? "block" : "none" }} classNane="start-finish">
+                        {this.gameinProgress ?
+                            <button className="finish start-fin-btn">FINISH</button> :
+                            <span>
+                                <button onClick={this.invite} className="invite start-fin-btn" >Invite</button>
+                                <button onClick={this.start} className="start start-fin-btn" >Start</button>
+                            </span>
+                        }
+                    </div>
+                    <div className="players">
+                        <h4>PLAYERS:</h4>
+                        <ul>
+                            {this.props.currentPlayers.map(p => { return <li key={p}>{p}</li> })}
+                        </ul>
+                    </div>
                 </div>
                 <div className="game-board">
                     {this.props.match.params.gameType === "drawing" ? <GameCanvas style={{ display: this.gameinProgress ? "block" : "none" }} /> : <StoryScreen style={{ visibility: this.gameinProgress ? "visibile" : "hidden" }} />}

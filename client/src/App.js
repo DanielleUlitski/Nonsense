@@ -5,7 +5,6 @@ import { inject } from 'mobx-react';
 import Home from './components/Home';
 import History from './components/History';
 import GameScreen from './components/GameScreen';
-import InviteModal from './components/InviteModal';
 import Login from './components/Login';
 
 @inject(allStores => ({
