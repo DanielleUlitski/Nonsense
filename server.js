@@ -77,11 +77,14 @@ io.sockets.on('connection', (socket) => {
         let index = findWithAttr(users, "userName", foundUser.userName);
         if (index >= 0) {
           let socketId = users[index].session;
-          console.log(socket.room);
           io.to(`${socketId}`).emit('gotInvite', socket.user.userName, socket.room, roomType);
         }
       }
     })
+  })
+
+  socket.on('enteredRoom', () => {
+
   })
 
   socket.on('joinRoom', (roomType, roomId) => {
@@ -100,6 +103,10 @@ io.sockets.on('connection', (socket) => {
     rooms[roomId].push(socket.user.userName);
     io.sockets.in(roomId).emit('userJoined', rooms[roomId]);
     socket.emit('loadRoom', socket.room)
+  })
+
+  socket.on('start', () => {
+    io.sockets.in(socket.room).emit('start');
   })
 
   socket.on('updateRoom', (x, y) => {
