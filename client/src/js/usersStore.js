@@ -11,8 +11,8 @@ class UsersStore {
 
     @observable gameType = null;
 
-    @action update = (x, y) => {
-        this.socket.emit('updateRoom', x, y);
+    @action update = (x, y, isNewLine) => {
+        this.socket.emit('updateRoom', x, y, isNewLine);
     }
 
     @action getPlayers = (arr) => {

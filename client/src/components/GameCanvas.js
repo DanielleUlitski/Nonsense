@@ -26,8 +26,8 @@ class GameCanvas extends Component {
         canvas.height = 1024;
         canvas.style.width = "712px";
         canvas.style.height = "712px";
-        this.props.socket.on('incomingUpdates', (x, y) => {
-            this.draw(x, y, this.color);
+        this.props.socket.on('incomingUpdates', (x, y, isNewLine) => {
+            this.draw(x, y, this.color, isNewLine);
         })
 
         this.props.socket.on('userJoined', (arr) => {
@@ -35,9 +35,10 @@ class GameCanvas extends Component {
         })
     }
 
-    draw = (x, y, color) => {
-        console.log(x + " " + y);
+    draw = (x, y, color, newLine) => {
         const ctx = this.refs.canvas.getContext('2d');
+        if (newLine) ctx.moveTo(x, y);
+        console.log(newLine);
         ctx.fillStyle = color;
         ctx.arc(x, y, 1, 0, Math.PI * 2);
         ctx.stroke();
@@ -47,7 +48,7 @@ class GameCanvas extends Component {
         if (!this.yourTurn) return;
         this.getPos(e);
         if (this.pressed) {
-            this.props.update(this.x, this.y);
+            this.props.update(this.x, this.y, false);
             // this.draw(this.x, this.y, this.color);
         }
 
@@ -56,7 +57,7 @@ class GameCanvas extends Component {
     @action mouseDown = (e) => {
         this.pressed = true;
         this.getPos(e)
-        this.props.update(this.x, this.y);
+        this.props.update(this.x, this.y, true);
     }
 
     @action mouseUp = () => {
