@@ -66,6 +66,7 @@ io.sockets.on('connection', (socket) => {
     rooms[newRoom] = [];
     rooms[newRoom].push(socket.user.userName);
     socket.join(newRoom);
+    socket.emit('userJoined', [socket.user.userName]);
   })
 
   socket.on('sendInvite', (user, roomType) => {
@@ -93,6 +94,7 @@ io.sockets.on('connection', (socket) => {
         Drawing.findById(roomId, (err, room) => {
           if (err) throw new Error(err);
           room.artists.push(socket.user.userName);
+          room.save();
         })
     }
 
@@ -109,7 +111,7 @@ io.sockets.on('connection', (socket) => {
     io.sockets.in(socket.room).emit('start');
   })
 
-  socket.on('updateRoom', (x, y) => {
-    io.sockets.in(socket.room).emit('incomingUpdates', x, y);
+  socket.on('updateRoom', (x, y, isNewLine) => {
+    io.sockets.in(socket.room).emit('incomingUpdates', x, y, isNewLine);
   })
 })
