@@ -21,6 +21,11 @@ class GameCanvas extends Component {
     @observable yourTurn = true;
 
     componentDidMount() {
+        const canvas = this.refs.canvas
+        canvas.width = 1024;
+        canvas.height = 1024;
+        canvas.style.width = "712px";
+        canvas.style.height = "712px";
         this.props.socket.on('incomingUpdates', (x, y) => {
             this.draw(x, y, this.color);
         })
@@ -31,6 +36,7 @@ class GameCanvas extends Component {
     }
 
     draw = (x, y, color) => {
+        console.log(x + " " + y);
         const ctx = this.refs.canvas.getContext('2d');
         ctx.fillStyle = color;
         ctx.arc(x, y, 1, 0, Math.PI * 2);
@@ -58,13 +64,21 @@ class GameCanvas extends Component {
     }
 
     @action getPos = (e) => {
-        this.x = e.clientX;
-        this.y = e.clientY;
+        const canvas = this.refs.canvas;
+        const bounds = canvas.getBoundingClientRect();
+        this.x = e.pageX - bounds.left;
+        this.y = e.pageY - bounds.top;
+
+        this.x /= bounds.width;
+        this.y /= bounds.height;
+
+        this.x *= canvas.width;
+        this.y *= canvas.height;
     }
 
     render() {
         return (
-            <canvas onTouchMove={this.mouseMove} onTouchEnd={this.mouseUp} onTouchStart={this.mouseDown} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} onMouseDown={this.mouseDown} ref="canvas" width={900} height={900} />
+            <canvas onTouchMove={this.mouseMove} onTouchEnd={this.mouseUp} onTouchStart={this.mouseDown} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} onMouseDown={this.mouseDown} ref="canvas" />
         );
     }
 }

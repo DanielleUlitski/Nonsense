@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { observable, action } from 'mobx';
 import { observer, inject } from 'mobx-react';
+import { Link } from 'react-router-dom'
 import '../styles/popup.css';
 import GameScreen from './GameScreen';
 
 @inject(allStores => ({
     socket: allStores.usersStore.socket,
     setType: allStores.usersStore.setType,
-    gameType: allStores.usersStore.gameType
+    gameType: allStores.usersStore.gameType,
+    getPlayers: allStores.usersStore.getPlayers
 }))
 @observer
 class InviteModal extends Component {
@@ -41,6 +43,7 @@ class InviteModal extends Component {
             userName: null,
             room: null
         }
+
     }
 
     @action decline = () => {
@@ -56,7 +59,7 @@ class InviteModal extends Component {
             <div style={{ visibility: this.pending ? "visible" : "hidden" }} className="popup">
                 <div className="modal-content">
                     <span>{this.invite.userName} Has invited you!</span>
-                    <button onClick={this.accept}>Accept</button>
+                    <Link to='/game/drawing' ><button onClick={this.accept}>Accept</button></Link>
                     <button onClick={this.decline}>Decline</button>
                 </div>
             </div>
