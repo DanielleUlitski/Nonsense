@@ -1,6 +1,12 @@
+@font-face {
+    font-family: myFirstFont;
+    src: url('./styles/bilboinc.regular.ttf');
+}
+
 body{
-    /* background-color: blue; */
-    background-image: url("https://media.gettyimages.com/photos/green-watercolor-background-with-splashes-picture-id671880210?b=1&k=6&m=671880210&s=612x612&w=0&h=kSMl05vl_Iw9MCsrSlDgOapEwguEe3s2IpI5SuXyygs=") 
+    background-image: url("https://ak9.picdn.net/shutterstock/videos/20107759/thumb/1.jpg");
+    font-family: myFirstFont;
+    font-size: 1.4em;
 }
 
 .navbar-btn {
@@ -26,6 +32,7 @@ body{
 #navbar {
     background-color: black;
     margin-top: 0px;
+    margin-bottom: 0px;
     height: 25px;
 }
 
