@@ -11,8 +11,29 @@ class UsersStore {
 
     @observable gameType = null;
 
+    @observable yourTurn = false;
+
+    @observable timer = undefined;
+
+    @observable finalProduct = undefined;
+
+    @action finalProductSet = (finalProduct) => {
+        this.finalProduct = finalProduct;
+    }
+
+    @action startTurn = () => {
+        this.yourTurn = true;
+        this.timer = setTimeout(this.pass, 5000);
+    }
+
     @action update = (x, y, isNewLine) => {
-        this.socket.emit('updateRoom', x, y, isNewLine);
+        this.socket.emit('updateDrawing', x, y, isNewLine);
+    }
+
+    @action pass = () => {
+        clearTimeout(this.timer);
+        this.socket.emit('pass', this.currentPlayers);
+        this.yourTurn = false;
     }
 
     @action getPlayers = (arr) => {
@@ -55,29 +76,35 @@ class UsersStore {
     }
 
     newDrawing = () => {
-        axios.post('/api/drawing/opendrawing', {userName: this.currentUser.userName}).then((drawing) => {
-            console.log(drawing);
-            this.socket.emit('newRoom', drawing.data._id);
-            this.socket.emit('updateRoom')
+        axios.post('/api/drawing/opendrawing', { userName: this.currentUser.userName }).then((drawing) => {
+            this.socket.emit('newRoom', drawing.data._id, "drawing");
         })
     }
 
     newStory = () => {
-        axios.post('/api/story/openstory').then((story) => {
-            this.socket.emit('newRoom', story.id);
+        axios.post('/api/story/openstory', { userName: this.currentUser.userName }).then((story) => {
+            this.socket.emit('newRoom', story.id, "story");
         })
     }
 
-    start = () => {
-
+    @action start = () => {
+        this.socket.emit('start');
+        this.startTurn();
     }
 
-    finish = () => {
-
+    finish = (gameType) => {
+        this.socket.emit('finish', gameType);
     }
 
     invite = (userName) => {
         this.socket.emit('sendInvite', userName, this.gameType);
+    }
+
+    @action logOut = () => {
+        clearTimeout(this.timer);
+        this.currentPlayers = [];
+        this.currentUser = null;
+        this.socket.emit('logOut');
     }
 }
 

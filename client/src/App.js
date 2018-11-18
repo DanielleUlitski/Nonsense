@@ -9,7 +9,7 @@ import Login from './components/Login';
 
 @inject(allStores => ({
   logOut: allStores.usersStore.logOut,
-  currentUser: allStores.usersStore.currentUser
+  currentUser: allStores.usersStore.currentUser,
 }))
 
 class App extends Component {
@@ -24,7 +24,10 @@ class App extends Component {
             <li className="navbar-btn">
               <Link to="/history">HISTORY</Link>
             </li>
-            <li className="navbar-btn-logout" onClick={this.props.logOut}>Log out</li>
+            <li className="navbar-btn logout" onClick={this.props.logOut}><Link to="/">Log out</Link></li>
+            <li className="user-display">
+              {this.props.currentUser ? this.props.currentUser.userName : null}
+            </li>
           </ul>
 
           <Login />
