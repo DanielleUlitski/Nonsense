@@ -15,7 +15,8 @@ import SendInvite from './SendInviteModal';
     pass: allStores.usersStore.pass,
     currentUser: allStores.usersStore.currentUser,
     yourTurn: allStores.usersStore.yourTurn,
-    timer: allStores.usersStore.timer
+    timer: allStores.usersStore.timer,
+    finalProduct: allStores.usersStore.finalProduct,
 }))
 
 @observer
@@ -40,8 +41,11 @@ class GameScreen extends Component {
 
     finish = () => {
         // this.gameinProgress = false;
-        this.gameEnded = true;
         this.props.finish(this.props.match.params.gameType);
+    }
+
+    setGameState = (bool) => {
+        this.gameEnded = bool;
     }
 
     pass = () => {
@@ -51,7 +55,7 @@ class GameScreen extends Component {
     render() {
         return (
             <div className="game-screen">
-                {(this.gameEnded) ? <GameResults gameType={this.props.match.params.gameType} /> : null}
+                {(this.props.finalProduct) ? <GameResults gameType={this.props.match.params.gameType} /> : null}
                 <div className="game-info">
                     <h2>LET THE NONSENSE BEGIN!</h2>
                     <div style={{ display: (this.props.currentPlayers[0] === this.props.currentUser.userName) ? "block" : "none" }} classNane="start-finish">
@@ -71,7 +75,7 @@ class GameScreen extends Component {
                             <span>
                                 <button onClick={this.pass} className="pass start-fin-btn">Pass</button>
                                 <h4 className="indicator">Your Turn!</h4>
-                                <span className="timer">{this.props.timer}</span>
+                                {/* <span className="timer">{this.props.timer}</span> */}
                             </span> :
                             null
                     }
@@ -83,7 +87,7 @@ class GameScreen extends Component {
                     </div>
                 </div>
                 <div className="game-board">
-                    {this.props.match.params.gameType === "drawing" ? <GameCanvas gameinProgress={this.gameinProgress} /> : <StoryScreen gameinProgress={this.gameinProgress} />}
+                    {this.props.match.params.gameType === "drawing" ? <GameCanvas setGameState={this.setGameState} gameinProgress={this.gameinProgress} /> : <StoryScreen setGameState={this.setGameState} gameinProgress={this.gameinProgress} />}
                 </div>
                 <SendInvite bool={this.bool} inv={this.invite} />
             </div>

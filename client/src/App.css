@@ -52,3 +52,7 @@ body{
     clear: none;
     color: white;
 }
+
+.drawing-field {
+    background-color: white;
+}
