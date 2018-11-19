@@ -4,11 +4,11 @@ import { observable, action } from 'mobx';
 import '../styles/canvas.css'
 
 @inject(allStores => ({
-    update: allStores.usersStore.update,
     socket: allStores.usersStore.socket,
     getPlayers: allStores.usersStore.getPlayers,
     yourTurn: allStores.usersStore.yourTurn,
-    startTurn: allStores.usersStore.startTurn
+    startTurn: allStores.usersStore.startTurn,
+    finalProductSet: allStores.usersStore.finalProductSet
 }))
 @observer
 class StoryScreen extends Component {
@@ -29,6 +29,10 @@ class StoryScreen extends Component {
         this.props.socket.on('yourTurn', () => {
             this.props.startTurn();
         })
+
+        this.props.socket.on('finish', (story) => {
+            this.props.finalProductSet(story);
+        })
     }
 
     @action send = () => {
@@ -37,6 +41,8 @@ class StoryScreen extends Component {
             this.timout = setTimeout(() => {
                 this.displayError = ""
             }, 2000);
+        } else {
+            
         }
     }
 
