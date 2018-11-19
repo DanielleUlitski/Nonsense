@@ -38,10 +38,16 @@ class GameScreen extends Component {
         this.props.start();
     }
 
-    finish = () => {
+    finish = (e) => {
         // this.gameinProgress = false;
         this.gameEnded = true;
         this.props.finish(this.props.match.params.gameType);
+        e.target.href = this.refs.canvas.toDataURL();
+        e.target.download = "mypainting.png";
+    }
+
+    setRefs = (refs) => {
+        this.refs = refs
     }
 
     pass = () => {
@@ -58,7 +64,7 @@ class GameScreen extends Component {
                         {
                             this.gameinProgress ?
                                 <span>
-                                    <button onClick={this.finish} className="finish start-fin-btn">FINISH</button>
+                                    <a href="#" onClick={this.finish} className="finish start-fin-btn">FINISH</a>
                                 </span> :
                                 <span>
                                     <button onClick={this.invite} className="invite start-fin-btn" >Invite</button>
@@ -83,7 +89,7 @@ class GameScreen extends Component {
                     </div>
                 </div>
                 <div className="game-board">
-                    {this.props.match.params.gameType === "drawing" ? <GameCanvas gameinProgress={this.gameinProgress} /> : <StoryScreen gameinProgress={this.gameinProgress} />}
+                    {this.props.match.params.gameType === "drawing" ? <GameCanvas gameinProgress={this.gameinProgress} setRefs={this.setRefs} /> : <StoryScreen gameinProgress={this.gameinProgress} />}
                 </div>
                 <SendInvite bool={this.bool} inv={this.invite} />
             </div>
