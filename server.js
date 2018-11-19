@@ -68,7 +68,7 @@ io.sockets.on('connection', (socket) => {
       if (socket.room !== 'Lobby') {
         io.sockets.in(`${socket.room}`).emit("userJoined", rooms[socket.room])
       }
-      if (rooms[socket.room].length <= 0) {
+      if (rooms[socket.room].length <= 0 && socket.room != "Lobby") {
         delete rooms[socket.room];
       }
     }
@@ -150,18 +150,7 @@ io.sockets.on('connection', (socket) => {
   })
 
   socket.on('updateDrawing', (x, y, isNewLine, color) => {
-    Drawing.findById(socket.room, (err, drawing) => {
-      if (err) throw new Error(err);
-      drawing.sequences.push({
-        x: x,
-        y: y,
-        isNewLine: isNewLine,
-        color: color
-      });
-      drawing.save((err, result) => {
-        io.sockets.in(socket.room).emit('incomingUpdates', x, y, isNewLine, color);
-      });
-    })
+    io.sockets.in(socket.room).emit('incomingUpdates', x, y, isNewLine, color);
   })
 
   socket.on('updateStory', (sentence, key) => {
@@ -183,17 +172,21 @@ io.sockets.on('connection', (socket) => {
       nextUserIndex = currentUserIndex + 1;
     }
     let nextUser = users[findWithAttr(users, "userName", usersInRoom[nextUserIndex])];
-    io.to(`${nextUser.session}`).emit('yourTurn');
+    if (nextUser) {
+      io.to(`${nextUser.session}`).emit('yourTurn');
+    }
   })
 
-  socket.on('finish', (gameType) => {
+  socket.on('finish', (gameType, arr) => {
     // delete rooms[socket.room];
     switch (gameType) {
       case "drawing":
-        console.log(socket.room);
         Drawing.findById(socket.room, (err, drawing) => {
           if (err) throw new Error(err);
-          io.sockets.in(socket.room).emit('finish', drawing.sequences);
+          drawing.sequences = arr;
+          drawing.save(() => {
+            io.sockets.in(socket.room).emit('finish', drawing.sequences);
+          });
         })
         break;
       case "story":
@@ -203,5 +196,16 @@ io.sockets.on('connection', (socket) => {
         break;
       default: console.error('missing gameType');
     }
+  })
+
+  socket.on('finalize', () => {
+    socket.leave(socket.room);
+    rooms[socket.room].splice(rooms[socket.room].indexOf(socket.user.userName), 1);
+    if (!rooms[socket.room].length) {
+      // rooms.splice(rooms.indexOf(socket.room), 1);
+      delete rooms[socket.room]
+    }
+    console.log(rooms);
+    socket.room = 'Lobby';
   })
 })
