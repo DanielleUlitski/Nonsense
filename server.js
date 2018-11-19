@@ -52,6 +52,7 @@ io.sockets.on('connection', (socket) => {
           socket.user = user;
           socket.room = 'Lobby';
           socket.join('Lobby');
+          console.log(rooms);
           rooms['Lobby'].push(socket.user.userName);
           socket.session = socketId;
           socket.emit('login', user);
@@ -148,17 +149,19 @@ io.sockets.on('connection', (socket) => {
     io.sockets.in(socket.room).emit('start');
   })
 
-  socket.on('updateDrawing', (x, y, isNewLine) => {
+  socket.on('updateDrawing', (x, y, isNewLine, color) => {
     Drawing.findById(socket.room, (err, drawing) => {
       if (err) throw new Error(err);
       drawing.sequences.push({
         x: x,
         y: y,
         isNewLine: isNewLine,
+        color: color
       });
-      drawing.save();
+      drawing.save((err, result) => {
+        io.sockets.in(socket.room).emit('incomingUpdates', x, y, isNewLine, color);
+      });
     })
-    io.sockets.in(socket.room).emit('incomingUpdates', x, y, isNewLine);
   })
 
   socket.on('updateStory', (sentence, key) => {
@@ -187,8 +190,10 @@ io.sockets.on('connection', (socket) => {
     // delete rooms[socket.room];
     switch (gameType) {
       case "drawing":
-        Drawing.findOne({ _id: socket.room }, (drawing) => {
-          io.sockets.in(socket.room).emit('finish', drawing);
+        console.log(socket.room);
+        Drawing.findById(socket.room, (err, drawing) => {
+          if (err) throw new Error(err);
+          io.sockets.in(socket.room).emit('finish', drawing.sequences);
         })
         break;
       case "story":
