@@ -26,8 +26,8 @@ class UsersStore {
         this.timer = setTimeout(this.pass, 5000);
     }
 
-    @action update = (x, y, isNewLine) => {
-        this.socket.emit('updateDrawing', x, y, isNewLine);
+    @action update = (x, y, isNewLine, color) => {
+        this.socket.emit('updateDrawing', x, y, isNewLine, color);
     }
 
     @action pass = () => {
@@ -93,6 +93,7 @@ class UsersStore {
     }
 
     finish = (gameType) => {
+        clearTimeout(this.timer);
         this.socket.emit('finish', gameType);
     }
 

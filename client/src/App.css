@@ -1,11 +1,15 @@
 @font-face {
-    font-family: myFirstFont;
-    src: url('./styles/bilboinc.regular.ttf');
+    font-family: appFont;
+    src: url('./styles/risestarhand.semibold.ttf');
 }
 
 body{
-    background-image: url("https://ak9.picdn.net/shutterstock/videos/20107759/thumb/1.jpg");
-    font-family: myFirstFont;
+    background-image: url("http://www.pptbackgrounds.org/uploads/dark-blue-background-backgrounds-wallpapers.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
+    font-family: appFont;
+    color: rgb(133, 231, 24);
     font-size: 1.4em;
 }
 
@@ -51,4 +55,8 @@ body{
     float: right;
     clear: none;
     color: white;
+}
+
+.drawing-field {
+    background-color: white;
 }
