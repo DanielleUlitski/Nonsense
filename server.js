@@ -68,7 +68,7 @@ io.sockets.on('connection', (socket) => {
       if (socket.room !== 'Lobby') {
         io.sockets.in(`${socket.room}`).emit("userJoined", rooms[socket.room])
       }
-      if (rooms[socket.room].length <= 0) {
+      if (rooms[socket.room].length <= 0 && socket.room != "Lobby") {
         delete rooms[socket.room];
       }
     }
