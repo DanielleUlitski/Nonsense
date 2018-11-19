@@ -9,7 +9,12 @@ import '../styles/canvas.css'
     getPlayers: allStores.usersStore.getPlayers,
     yourTurn: allStores.usersStore.yourTurn,
     startTurn: allStores.usersStore.startTurn,
-    finalProductSet: allStores.usersStore.finalProductSet
+    finalProductSet: allStores.usersStore.finalProductSet,
+    currentPlayers: allStores.usersStore.currentPlayers,
+    currentUser: allStores.usersStore.currentUser,
+    updateSequence: allStores.usersStore.updateSequence,
+    stopTimer: allStores.usersStore.stopTimer,
+    color: allStores.usersStore.color
 }))
 @observer
 class GameCanvas extends Component {
@@ -20,15 +25,18 @@ class GameCanvas extends Component {
 
     @observable y = null;
 
-    @observable color = "rgba(0, 0, 0, 1)";
+    @observable canvas = undefined;
 
     componentDidMount() {
-        const canvas = this.refs.canvas
-        canvas.width = 1024;
-        canvas.height = 1024;
-        canvas.style.width = "712px";
-        canvas.style.height = "712px";
+        this.canvas = this.refs.canvas
+        this.canvas.width = 1024;
+        this.canvas.height = 1024;
+        this.canvas.style.width = "712px";
+        this.canvas.style.height = "712px";
         this.props.socket.on('incomingUpdates', (x, y, isNewLine, color) => {
+            if (this.props.currentPlayers[0] === this.props.currentUser.userName) {
+                this.props.updateSequence(x, y, isNewLine, color);
+            }
             this.draw(x, y, isNewLine, color);
         })
 
@@ -41,26 +49,29 @@ class GameCanvas extends Component {
         })
 
         this.props.socket.on('finish', (drawing) => {
-            console.log(drawing)
+            this.props.stopTimer()
             this.props.setGameState(true);
             this.props.finalProductSet(drawing);
         })
     }
 
     draw = (x, y, newLine, color) => {
-        const ctx = this.refs.canvas.getContext('2d');
-        if (newLine) ctx.moveTo(x, y);
-        ctx.fillStyle = color;
+        const ctx = this.canvas.getContext('2d');
+        if (newLine) {
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+        ctx.strokeStyle = color;
         ctx.arc(x, y, 0.25, 0, Math.PI * 2);
         ctx.stroke();
     }
 
     mouseMove = (e) => {
-        console.log(this.props.yourTurn);
         if (!this.props.yourTurn) return;
         this.getPos(e);
         if (this.pressed) {
-            this.props.update(this.x, this.y, false, this.color);
+            this.props.update(this.x, this.y, false);
         }
 
     }
@@ -68,7 +79,7 @@ class GameCanvas extends Component {
     @action mouseDown = (e) => {
         this.pressed = true;
         this.getPos(e)
-        if (this.props.yourTurn) this.props.update(this.x, this.y, true, this.color);
+        if (this.props.yourTurn) this.props.update(this.x, this.y, true, this.props.color);
     }
 
     @action mouseUp = () => {
