@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import '../styles/popup.css';
 import { inject } from 'mobx-react';
+import { Link } from 'react-router-dom'
+
 
 @inject(allStores => ({
     finalProduct: allStores.usersStore.finalProduct,
