@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
 import '../styles/popup.css';
-<<<<<<< HEAD
-import { inject } from 'mobx-react';
-import { Link } from 'react-router-dom'
-
-=======
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { observable } from 'mobx';
->>>>>>> 845476accc232826ea4c920353f2b5e8f61f1922
 
 @inject(allStores => ({
     finalProduct: allStores.usersStore.finalProduct,
