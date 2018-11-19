@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const drawingSchema = new Schema({
     img: { data: Buffer, contentType: String },
     artists: [],
-    secuences: []
+    sequences: []
 });
 
 const Drawing = mongoose.model('drawing', drawingSchema);

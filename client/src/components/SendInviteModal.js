@@ -16,9 +16,10 @@ class SendInvite extends Component {
         this[e.target.name] = e.target.value;
     }
 
-    send = () => {
+    @action send = () => {
         this.props.inv();
         this.props.invite(this.username);
+        this.username = "";
     }
 
     render() {

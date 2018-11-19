@@ -6,7 +6,10 @@ import '../styles/canvas.css'
 @inject(allStores => ({
     update: allStores.usersStore.update,
     socket: allStores.usersStore.socket,
-    getPlayers: allStores.usersStore.getPlayers
+    getPlayers: allStores.usersStore.getPlayers,
+    yourTurn: allStores.usersStore.yourTurn,
+    startTurn: allStores.usersStore.startTurn,
+    finalProductSet: allStores.usersStore.finalProductSet
 }))
 @observer
 class GameCanvas extends Component {
@@ -18,8 +21,6 @@ class GameCanvas extends Component {
     @observable y = null;
 
     @observable color = "rgba(0, 0, 0, 1)";
-
-    @observable yourTurn = true;
 
     componentDidMount() {
         const canvas = this.refs.canvas
@@ -34,19 +35,28 @@ class GameCanvas extends Component {
         this.props.socket.on('userJoined', (arr) => {
             this.props.getPlayers(arr)
         })
+
+        this.props.socket.on('yourTurn', () => {
+            this.props.startTurn();
+        })
+
+        this.props.socket.on('finish', (drawing) => {
+            this.props.finalProductSet(drawing);
+        })
     }
 
     draw = (x, y, color, newLine) => {
         const ctx = this.refs.canvas.getContext('2d');
         if (newLine) ctx.moveTo(x, y);
-        console.log(newLine);
         ctx.fillStyle = color;
-        ctx.arc(x, y, 1, 0, Math.PI * 2);
+        // ctx.fillRect(x, y, 2, 2);
+        ctx.arc(x, y, 0.5, 0, Math.PI * 2);
         ctx.stroke();
     }
 
     mouseMove = (e) => {
-        if (!this.yourTurn) return;
+        console.log(this.props.yourTurn);
+        if (!this.props.yourTurn) return;
         this.getPos(e);
         if (this.pressed) {
             this.props.update(this.x, this.y, false);
@@ -58,7 +68,7 @@ class GameCanvas extends Component {
     @action mouseDown = (e) => {
         this.pressed = true;
         this.getPos(e)
-        this.props.update(this.x, this.y, true);
+        if (this.props.yourTurn) this.props.update(this.x, this.y, true);
     }
 
     @action mouseUp = () => {

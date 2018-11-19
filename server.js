@@ -6,9 +6,7 @@ const bodyParser = require('body-parser');
 const io = require('socket.io').listen(server)
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://nonsensus:zyaHJa4YzsZPDQ5@ds127961.mlab.com:27961/nonsense', () => {
-  console.log("DB connection established!!!");
-})
+mongoose.connect('mongodb://nonsensus:zyaHJa4YzsZPDQ5@ds127961.mlab.com:27961/nonsense')
 
 const usersAPI = require('./routes/usersAPI')
 const storyAPI = require('./routes/storyAPI')
@@ -65,20 +63,40 @@ io.sockets.on('connection', (socket) => {
   socket.on('disconnect', () => {
     if (socket.user) {
       users.splice(findWithAttr(users, 'userName', socket.user.userName), 1);
+      rooms[socket.room].splice(rooms[socket.room].indexOf(socket.user.userName), 1);
+      if (socket.room !== 'Lobby') {
+        io.sockets.in(`${socket.room}`).emit("userJoined", rooms[socket.room])
+      }
+      if (rooms[socket.room].length <= 0) {
+        delete rooms[socket.room];
+      }
     }
   })
 
   socket.on('logOut', () => {
     users.splice(findWithAttr(users, 'userName', socket.user.userName), 1);
-    if (socket.room === 'Lobby') {
-      rooms['Lobby'].splice(rooms['Lobby'].indexOf(socket.userName), 1);
+    rooms[socket.room].splice(rooms[socket.room].indexOf(socket.user.userName), 1);
+    if (socket.room !== 'Lobby') {
+      io.sockets.in(`${socket.room}`).emit('userJoined', rooms[socket.room]);
     }
-    socket.leaveAll();
+    socket.leave(socket.room);
     socket.room = undefined;
   })
 
-  socket.on('newRoom', (newRoom) => {
-    console.log(newRoom);
+  socket.on('newRoom', (newRoom, roomType) => {
+    User.findOne({ userName: socket.user.userName }, (err, user) => {
+      if (err) throw new Error(err);
+      switch (roomType) {
+        case 'drawing':
+          user.drawings.push(newRoom);
+          break;
+        case 'story':
+          user.stories.push(newRoom);
+          break;
+        default: console.error('no Room Type');
+      }
+      user.save();
+    })
     socket.leave('Lobby');
     rooms['Lobby'].splice(rooms['Lobby'].indexOf(socket.user.userName), 1);
     socket.room = newRoom;
@@ -103,10 +121,6 @@ io.sockets.on('connection', (socket) => {
     })
   })
 
-  socket.on('enteredRoom', () => {
-
-  })
-
   socket.on('joinRoom', (roomType, roomId) => {
     switch (roomType) {
       case "drawing":
@@ -116,7 +130,11 @@ io.sockets.on('connection', (socket) => {
           room.save();
         })
     }
-
+    User.findOne({ userName: socket.user.userName }, (err, user) => {
+      if (err) throw new Error(err);
+      user.drawings.push(roomId);
+      user.save();
+    })
     socket.leave('Lobby');
     socket.room = roomId;
     rooms['Lobby'].splice(rooms['Lobby'].indexOf(socket.user.userName), 1);
@@ -130,7 +148,55 @@ io.sockets.on('connection', (socket) => {
     io.sockets.in(socket.room).emit('start');
   })
 
-  socket.on('updateRoom', (x, y, isNewLine) => {
+  socket.on('updateDrawing', (x, y, isNewLine) => {
+    Drawing.findById(socket.room, (err, drawing) => {
+      if (err) throw new Error(err);
+      drawing.sequences.push({
+        x: x,
+        y: y,
+        isNewLine: isNewLine,
+      });
+      drawing.save();
+    })
     io.sockets.in(socket.room).emit('incomingUpdates', x, y, isNewLine);
+  })
+
+  socket.on('updateStory', (sentence, key) => {
+    Story.findById(socket.room, (err, story) => {
+      if (err) throw new Error(err);
+      story.text.push(sentence);
+      story.save();
+    })
+    io.sockets.in(socket.room).emit('storyUpdates', key);
+  })
+
+  socket.on('pass', (usersInRoom) => {
+    let nextUserIndex;
+    let currentUserIndex = usersInRoom.indexOf(socket.user.userName);
+    if (currentUserIndex >= usersInRoom.length - 1) {
+      nextUserIndex = 0;
+    }
+    else {
+      nextUserIndex = currentUserIndex + 1;
+    }
+    let nextUser = users[findWithAttr(users, "userName", usersInRoom[nextUserIndex])];
+    io.to(`${nextUser.session}`).emit('yourTurn');
+  })
+
+  socket.on('finish', (gameType) => {
+    // delete rooms[socket.room];
+    switch (gameType) {
+      case "drawing":
+        Drawing.findOne({ _id: socket.room }, (drawing) => {
+          io.sockets.in(socket.room).emit('finish', drawing);
+        })
+        break;
+      case "story":
+        Story.findOne({ _id: socket.room }, (story) => {
+          io.sockets.in(socket.room).emit('finish', story);
+        })
+        break;
+      default: console.error('missing gameType');
+    }
   })
 })

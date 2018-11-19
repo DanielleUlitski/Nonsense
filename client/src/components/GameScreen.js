@@ -12,7 +12,10 @@ import SendInvite from './SendInviteModal';
     finish: allStores.usersStore.finish,
     currentPlayers: allStores.usersStore.currentPlayers,
     socket: allStores.usersStore.socket,
-    currentUser: allStores.usersStore.currentUser
+    pass: allStores.usersStore.pass,
+    currentUser: allStores.usersStore.currentUser,
+    yourTurn: allStores.usersStore.yourTurn,
+    timer: allStores.usersStore.timer
 }))
 
 @observer
@@ -32,30 +35,46 @@ class GameScreen extends Component {
     }
 
     start = () => {
-        this.props.socket.emit('start');
+        this.props.start();
     }
 
     finish = () => {
         // this.gameinProgress = false;
         this.gameEnded = true;
-        this.props.finish();
+        this.props.finish(this.props.match.params.gameType);
+    }
+
+    pass = () => {
+        this.props.pass();
     }
 
     render() {
         return (
             <div className="game-screen">
-                {this.gameEnded ? <GameResults /> : null}
+                {(this.gameEnded) ? <GameResults gameType={this.props.match.params.gameType} /> : null}
                 <div className="game-info">
                     <h2>LET THE NONSENSE BEGIN!</h2>
                     <div style={{ display: (this.props.currentPlayers[0] === this.props.currentUser.userName) ? "block" : "none" }} classNane="start-finish">
-                        {this.gameinProgress ?
-                            <button className="finish start-fin-btn">FINISH</button> :
-                            <span>
-                                <button onClick={this.invite} className="invite start-fin-btn" >Invite</button>
-                                <button onClick={this.start} className="start start-fin-btn" >Start</button>
-                            </span>
+                        {
+                            this.gameinProgress ?
+                                <span>
+                                    <button onClick={this.finish} className="finish start-fin-btn">FINISH</button>
+                                </span> :
+                                <span>
+                                    <button onClick={this.invite} className="invite start-fin-btn" >Invite</button>
+                                    <button onClick={this.start} className="start start-fin-btn" >Start</button>
+                                </span>
                         }
                     </div>
+                    {
+                        this.props.yourTurn ?
+                            <span>
+                                <button onClick={this.pass} className="pass start-fin-btn">Pass</button>
+                                <h4 className="indicator">Your Turn!</h4>
+                                <span className="timer">{this.props.timer}</span>
+                            </span> :
+                            null
+                    }
                     <div className="players">
                         <h4>PLAYERS:</h4>
                         <ul>

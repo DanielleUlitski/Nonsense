@@ -15,12 +15,7 @@ body{
     margin-right: 13px;
 }
 
-.navbar-btn-logout {
-    color: white;
-    list-style-type: none;
-}
-
-.navbar-btn-logout:hover {
+.logout:hover {
     cursor: pointer;
 }
 
@@ -34,6 +29,7 @@ body{
     margin-top: 0px;
     margin-bottom: 0px;
     height: 25px;
+    list-style: none;
 }
 
 .image-link {
@@ -49,4 +45,10 @@ body{
 .game-link {
     float: left;
     clear: none;
+}
+
+.user-display {
+    float: right;
+    clear: none;
+    color: white;
 }

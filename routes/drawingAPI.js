@@ -22,12 +22,10 @@ router.post('/opendrawing', (req, res) => {
     })
 })
 
-router.post('/enddrawing', (req, res) => {
-    let drawing = req.body.drawing;
-    Story.findOneAndUpdate({ _id: drawing._id }, { img: drawing.img, artists: drawing.artists, secuences: drawing.secuences }).exec((err, drawing) => {
-        if (err) throw new Error(err);
-        res.send(drawing)
-    })
-})
+// router.get('/getFinal/:drawingId', (req, res) => {
+//     Drawing.findOne({ _id: req.params.drawingId }, (drawing) => {
+//         res.send(drawing);
+//     })
+// })
 
 module.exports = router;
