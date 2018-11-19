@@ -6,6 +6,7 @@ import '../styles/gameScreen.css';
 import GameCanvas from './GameCanvas';
 import StoryScreen from './StoryScreen';
 import SendInvite from './SendInviteModal';
+import ColorPallete from './ColorPallete';
 
 @inject(allStores => ({
     start: allStores.usersStore.start,
@@ -17,6 +18,7 @@ import SendInvite from './SendInviteModal';
     yourTurn: allStores.usersStore.yourTurn,
     timer: allStores.usersStore.timer,
     finalProduct: allStores.usersStore.finalProduct,
+    resetVariables: allStores.usersStore.resetVariables
 }))
 
 @observer
@@ -28,6 +30,7 @@ class GameScreen extends Component {
     componentDidMount() {
         this.props.socket.on('start', () => {
             this.gameinProgress = true;
+            this.gameEnded = false;
         })
     }
 
@@ -50,6 +53,22 @@ class GameScreen extends Component {
 
     pass = () => {
         this.props.pass();
+    }
+
+    renderGameBoard = (gameType) => {
+        switch (gameType) {
+            case "drawing":
+                return (
+                    <span>
+                        <GameCanvas setGameState={this.setGameState} gameinProgress={this.gameinProgress} />
+                        <ColorPallete />
+                    </span>
+                )
+            case "story":
+                return <StoryScreen setGameState={this.setGameState} gameinProgress={this.gameinProgress} />
+            default:
+                return null;
+        }
     }
 
     render() {
@@ -87,7 +106,7 @@ class GameScreen extends Component {
                     </div>
                 </div>
                 <div className="game-board">
-                    {this.props.match.params.gameType === "drawing" ? <GameCanvas setGameState={this.setGameState} gameinProgress={this.gameinProgress} /> : <StoryScreen setGameState={this.setGameState} gameinProgress={this.gameinProgress} />}
+                    {this.renderGameBoard(this.props.match.params.gameType)}
                 </div>
                 <SendInvite bool={this.bool} inv={this.invite} />
             </div>

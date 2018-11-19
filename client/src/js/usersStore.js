@@ -17,8 +17,25 @@ class UsersStore {
 
     @observable finalProduct = undefined;
 
+    @observable sequences = [];
+
+    @observable color = "rgba(0, 0, 0, 1)";
+
     @action finalProductSet = (finalProduct) => {
         this.finalProduct = finalProduct;
+    }
+
+    @action changeColor = (color) => {
+        this.color = color;
+    }
+
+    @action updateSequence = (x, y, isNewLine, color) => {
+        this.sequences.push({
+            x: x,
+            y: y,
+            isNewLine: isNewLine,
+            color: color
+        });
     }
 
     @action startTurn = () => {
@@ -26,8 +43,8 @@ class UsersStore {
         this.timer = setTimeout(this.pass, 5000);
     }
 
-    @action update = (x, y, isNewLine, color) => {
-        this.socket.emit('updateDrawing', x, y, isNewLine, color);
+    @action update = (x, y, isNewLine) => {
+        this.socket.emit('updateDrawing', x, y, isNewLine, this.color);
     }
 
     @action pass = () => {
@@ -42,7 +59,6 @@ class UsersStore {
 
     @action signUp = (user) => {
         axios.post('/api/user', user).then((user) => {
-            console.log(user.data);
             if (!user.data) {
                 console.log("username already in use!");
             } else {
@@ -93,12 +109,27 @@ class UsersStore {
     }
 
     finish = (gameType) => {
+        this.socket.emit('finish', gameType, this.sequences);
+    }
+
+    stopTimer = () => {
         clearTimeout(this.timer);
-        this.socket.emit('finish', gameType);
     }
 
     invite = (userName) => {
         this.socket.emit('sendInvite', userName, this.gameType);
+    }
+
+    @action finalize = () => {
+        this.currentPlayers = [];
+        this.gameType = null;
+        this.yourTurn = false;
+        this.sequences = []
+        this.finalProduct = undefined;
+        this.yourTurn = false;
+        this.color = "rgba(0, 0, 0, 1)";
+        this.stopTimer()
+        this.socket.emit('finalize');
     }
 
     @action logOut = () => {
