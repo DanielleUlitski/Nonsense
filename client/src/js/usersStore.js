@@ -25,12 +25,15 @@ class UsersStore {
 
     @observable gameinProgress = false;
 
+    @observable gameType = undefined;
+
     @action startGame = () => {
         this.gameinProgress = true;
     }
 
-    @action finalProductSet = (finalProduct) => {
+    @action finalProductSet = (finalProduct, gameType) => {
         this.finalProduct = finalProduct;
+        this.gameType = gameType;
     }
 
     @action saveTheme = (word) => {
@@ -50,9 +53,9 @@ class UsersStore {
         });
     }
 
-    @action startTurn = (gameType) => {
+    @action startTurn = (str) => {
         this.yourTurn = true;
-        if(gameType === "drawing"){
+        if(str === "drawing"){
             this.timer = setTimeout(this.pass, 15000);
         }
     }

@@ -6,7 +6,8 @@ import { observable } from 'mobx';
 
 @inject(allStores => ({
     finalProduct: allStores.usersStore.finalProduct,
-    finalize: allStores.usersStore.finalize
+    finalize: allStores.usersStore.finalize,
+    gameType: allStores.usersStore.gameType
 }))
 @observer
 class GameResults extends Component {
@@ -15,6 +16,8 @@ class GameResults extends Component {
 
     @observable resultCanvas = undefined;
 
+    yPosition = 50;
+
     componentDidMount() {
         if (this.refs.resultCanvas) {
             this.resultCanvas = this.refs.resultCanvas
@@ -22,7 +25,14 @@ class GameResults extends Component {
             this.resultCanvas.height = 1024;
             this.resultCanvas.style.width = "712px";
             this.resultCanvas.style.height = "712px";
-            this.renderDrawing()
+            switch (this.props.gameType) {
+                case "drawing":
+                    this.renderDrawing();
+                    break;
+                case "story":
+                    this.renderStory()
+                    break;
+            }
         }
     }
 
@@ -48,30 +58,44 @@ class GameResults extends Component {
         ctx.stroke();
     }
 
-    renderStory = () => {
+    write = (letter) => {
+        const ctx = this.resultCanvas.getContext('2b');
+        if (this.i === 0) {
+            ctx.font = "13px floralCapitals";
+        } else {
+            ctx.font = "13px crawley"
+        }
+        if (letter === '.' || letter === ',') {
+            this.yPosition += 40;
+        }
+    }
 
+    renderStory = () => {
+        if (this.i < this.props.finalProduct.length - 1) { requestAnimationFrame(this.renderStory) }
+        this.write(this.props.finalProduct[this.i])
+        this.i++
     }
 
     finalize = () => {
         this.props.finalize()
     }
 
-    renderFinal = () => {
-        switch (this.props.gameType) {
-            case "drawing":
-                return <canvas className="drawing-field" ref="resultCanvas" />;
-            case "story":
-                return <div className="story-field">{this.renderStory}</div>;
-            default:
-                return null;
-        }
-    }
+    // renderFinal = () => {
+    //     switch (this.props.gameType) {
+    //         case "drawing":
+    //             return <canvas className="drawing-field" ref="resultCanvas" />;
+    //         case "story":
+    //             return <div className="story-field">{this.renderStory}</div>;
+    //         default:
+    //             return null;
+    //     }
+    // }
 
     render() {
         return (
             <div className="popup">
                 <Link to="/"><span onClick={this.finalize}>Home</span></Link>
-                {this.renderFinal()}
+                <canvas className="drawing-field" ref="resultCanvas" />
             </div>
         )
     }

@@ -3,6 +3,16 @@
     src: url('./styles/risestarhand.semibold.ttf');
 }
 
+@font-face {
+    font-family: floralCapitals;
+    src: url('./styles/floral-capitals.regular.ttf');
+}
+
+@font-face {
+    font-family: crawley;
+    src: url('./styles/crawley.regular.ttf');
+}
+
 body{
     background-image: -webkit-linear-gradient(left, rgb(44, 41, 61) , rgb(83, 97, 109) );
     font-family: appFont;

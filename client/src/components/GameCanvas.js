@@ -48,7 +48,7 @@ class GameCanvas extends Component {
             this.props.stopTimer()
             this.props.setGameState(true);
             this.props.getDrawings(this.props.currentUser.userName);
-            this.props.finalProductSet(drawing.sequences);
+            this.props.finalProductSet(drawing.sequences, "drawing");
         })
     }
 
