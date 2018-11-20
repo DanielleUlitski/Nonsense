@@ -185,7 +185,7 @@ io.sockets.on('connection', (socket) => {
           if (err) throw new Error(err);
           drawing.sequences = arr;
           drawing.save(() => {
-            io.sockets.in(socket.room).emit('finish', drawing.sequences);
+            io.sockets.in(socket.room).emit('finish', drawing);
           });
         })
         break;
