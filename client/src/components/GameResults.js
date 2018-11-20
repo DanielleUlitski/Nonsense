@@ -17,6 +17,7 @@ class GameResults extends Component {
     @observable resultCanvas = undefined;
 
     yPosition = 50;
+    xPosition = 10;
 
     componentDidMount() {
         if (this.refs.resultCanvas) {
@@ -59,20 +60,26 @@ class GameResults extends Component {
     }
 
     write = (letter) => {
-        const ctx = this.resultCanvas.getContext('2b');
+        const ctx = this.resultCanvas.getContext('2d');
         if (this.i === 0) {
-            ctx.font = "13px floralCapitals";
+            ctx.font = "30px floralCapitals";
         } else {
-            ctx.font = "13px crawley"
+            ctx.font = "30px crawley"
         }
         if (letter === '.' || letter === ',') {
+            ctx.fillText(letter, this.xPosition, this.yPosition);
             this.yPosition += 40;
+            this.xPosition = 10;
+        } else {
+            ctx.fillText(letter, this.xPosition, this.yPosition);
         }
     }
 
     renderStory = () => {
         if (this.i < this.props.finalProduct.length - 1) { requestAnimationFrame(this.renderStory) }
+        console.log(this.props.finalProduct[this.i]);
         this.write(this.props.finalProduct[this.i])
+        this.xPosition += 8;
         this.i++
     }
 
