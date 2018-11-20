@@ -172,7 +172,7 @@ io.sockets.on('connection', (socket) => {
           user.drawings.push(roomId);
         case "story":
           user.stories.push(roomId);
-      } 
+      }
       user.save();
     })
     if (rooms[socket.room]) {
@@ -206,7 +206,7 @@ io.sockets.on('connection', (socket) => {
       if (err) throw new Error(err);
       if (sentence[sentence.length - 1] != "." && sentence[sentence.length - 1] != ",") sentence += ".";
       let storyLetters = sentence.split("")
-      story.text.push(storyLetters);
+      story.text = story.text.concat(storyLetters);
       story.save();
     })
     let currentUserIndex = rooms[socket.room].indexOf(socket.user.userName);
