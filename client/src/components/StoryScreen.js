@@ -10,7 +10,8 @@ import '../styles/canvas.css'
     startTurn: allStores.usersStore.startTurn,
     finalProductSet: allStores.usersStore.finalProductSet,
     getStoreis: allStores.historyStore.getStoreis,
-    currentUser: allStores.usersStore.currentUser
+    currentUser: allStores.usersStore.currentUser,
+    pass: allStores.usersStore.pass
 }))
 @observer
 class StoryScreen extends Component {
@@ -47,7 +48,7 @@ class StoryScreen extends Component {
         })
 
         this.props.socket.on('yourTurn', (key) => {
-            this.props.startTurn();
+            this.props.startTurn("story");
         })
 
         this.props.socket.on('finish', (story) => {
@@ -58,7 +59,7 @@ class StoryScreen extends Component {
 
     showKey = (key) => {
         let ctx = this.canvas.getContext("2d")
-        ctx.font = "30px ../styles/crawley.regular.ttf";
+        ctx.font = "30px ariel";
         ctx.fillText("Your key word is: " + key, 10, this.yPositions);
         this.yPositions += 40;
         this.previosKey = key;
@@ -82,6 +83,7 @@ class StoryScreen extends Component {
             ctx.fillText(this.keyInp, 10, this.yPositions);
             this.yPositions += 40;
             this.props.socket.emit('updateStory', (this.previosKey+" "+this.sentenceInp), this.keyInp);
+            this.props.pass();
             this.sentenceInp = "";
             this.keyInp = "";
             this.previosKey = "";

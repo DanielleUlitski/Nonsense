@@ -38,6 +38,7 @@ class InviteModal extends Component {
     }
 
     @action accept = () => {
+        console.log(this.props.gameType)
         this.props.socket.emit('joinRoom', this.props.gameType, this.invite.room);
         this.pending = false;
         this.invite = {
@@ -60,7 +61,7 @@ class InviteModal extends Component {
             <div style={{ visibility: this.pending ? "visible" : "hidden" }} className="popup">
                 <div className="modal-content">
                     <span>{this.invite.userName} Has invited you!</span>
-                    <Link to='/game/drawing' ><button onClick={this.accept}>Accept</button></Link>
+                    <Link to={'/game/' + this.props.gameType} ><button onClick={this.accept}>Accept</button></Link>
                     <button onClick={this.decline}>Decline</button>
                 </div>
             </div>

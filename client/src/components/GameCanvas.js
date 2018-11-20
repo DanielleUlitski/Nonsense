@@ -6,7 +6,6 @@ import '../styles/canvas.css'
 @inject(allStores => ({
     update: allStores.usersStore.update,
     socket: allStores.usersStore.socket,
-    getPlayers: allStores.usersStore.getPlayers,
     yourTurn: allStores.usersStore.yourTurn,
     startTurn: allStores.usersStore.startTurn,
     finalProductSet: allStores.usersStore.finalProductSet,
@@ -41,13 +40,8 @@ class GameCanvas extends Component {
             this.draw(x, y, isNewLine, color);
         })
 
-        this.props.socket.on('userJoined', (arr) => {
-            console.log(arr);
-            this.props.getPlayers(arr)
-        })
-
         this.props.socket.on('yourTurn', () => {
-            this.props.startTurn();
+            this.props.startTurn("drawing");
         })
 
         this.props.socket.on('finish', (drawing) => {
