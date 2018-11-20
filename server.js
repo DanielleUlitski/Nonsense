@@ -189,9 +189,9 @@ io.sockets.on('connection', (socket) => {
   socket.on('updateStory', (sentence, key) => {
     Story.findById(socket.room, (err, story) => {
       if (err) throw new Error(err);
-      if (sentence[sentence.length-1] != "." && sentence[sentence.length-1] != ",") sentence += ".";
+      if (sentence[sentence.length - 1] != "." && sentence[sentence.length - 1] != ",") sentence += ".";
       let storyLetters = sentence.split("")
-      story.text.push(storyLetters);
+      story.text = story.text.concat(storyLetters);
       story.save();
     })
     let currentUserIndex = rooms[socket.room].indexOf(socket.userName);

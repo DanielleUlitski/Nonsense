@@ -51,7 +51,7 @@ class StoryScreen extends Component {
         })
 
         this.props.socket.on('finish', (story) => {
-            this.props.finalProductSet(story);
+            this.props.finalProductSet(story.text, "story");
             this.props.getStoreis(this.userName)
         })
     }
@@ -59,7 +59,7 @@ class StoryScreen extends Component {
     showKey = (key) => {
         let ctx = this.canvas.getContext("2d")
         ctx.font = "30px ../styles/crawley.regular.ttf";
-        ctx.fillText("Your key word is: " + key, 10, this.yPositions);
+        ctx.fillText(key, 10, this.yPositions);
         this.yPositions += 40;
         this.previosKey = key;
     }
@@ -76,11 +76,11 @@ class StoryScreen extends Component {
             }, 2000);
         } else {
             let ctx = this.canvas.getContext("2d")
-            ctx.font = "30px ariel";
+            ctx.font = "13px ariel";
             ctx.fillText(this.previosKey+this.sentenceInp, 10, this.yPositions);
             this.yPositions += 40;
-            ctx.fillText(this.keyInp, 10, this.yPositions);
-            this.yPositions += 40;
+            // ctx.fillText(this.keyInp, 10, this.yPositions);
+            // this.yPositions += 40;
             this.props.socket.emit('updateStory', (this.previosKey+" "+this.sentenceInp), this.keyInp);
             this.sentenceInp = "";
             this.keyInp = "";
