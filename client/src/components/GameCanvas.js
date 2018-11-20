@@ -14,7 +14,8 @@ import '../styles/canvas.css'
     currentUser: allStores.usersStore.currentUser,
     updateSequence: allStores.usersStore.updateSequence,
     stopTimer: allStores.usersStore.stopTimer,
-    color: allStores.usersStore.color
+    color: allStores.usersStore.color,
+    getDrawings: allStores.historyStore.getDrawings
 }))
 @observer
 class GameCanvas extends Component {
@@ -41,6 +42,7 @@ class GameCanvas extends Component {
         })
 
         this.props.socket.on('userJoined', (arr) => {
+            console.log(arr);
             this.props.getPlayers(arr)
         })
 
@@ -51,6 +53,7 @@ class GameCanvas extends Component {
         this.props.socket.on('finish', (drawing) => {
             this.props.stopTimer()
             this.props.setGameState(true);
+            this.props.getDrawings(this.props.currentUser.userName);
             this.props.finalProductSet(drawing.sequences);
         })
     }
