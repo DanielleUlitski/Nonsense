@@ -4,7 +4,7 @@
 }
 
 body{
-    background-image: -webkit-linear-gradient(left, rgb(44, 41, 61) 50%, rgb(83, 97, 109) 50%);
+    background-image: -webkit-linear-gradient(left, rgb(44, 41, 61) , rgb(83, 97, 109) );
     font-family: appFont;
     color: rgb(133, 231, 24);
     font-size: 1.4em;

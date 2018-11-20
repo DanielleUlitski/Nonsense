@@ -21,7 +21,8 @@ import ColorPallete from './ColorPallete';
     resetVariables: allStores.usersStore.resetVariables,
     themeWord: allStores.usersStore.word,
     startGame: allStores.usersStore.startGame,
-    gameinProgress: allStores.usersStore.gameinProgress
+    gameinProgress: allStores.usersStore.gameinProgress,
+    getPlayers: allStores.usersStore.getPlayers,
 }))
 
 @observer
@@ -33,6 +34,10 @@ class GameScreen extends Component {
         this.props.socket.on('start', () => {
             this.props.startGame()
             this.gameEnded = false;
+        })
+
+        this.props.socket.on('userJoined', (arr) => {
+            this.props.getPlayers(arr)
         })
     }
 

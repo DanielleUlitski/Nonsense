@@ -4,17 +4,11 @@ import { observable, action } from 'mobx';
 import '../styles/canvas.css'
 
 @inject(allStores => ({
-    update: allStores.usersStore.update,
     socket: allStores.usersStore.socket,
-    yourTurn: allStores.usersStore.yourTurn,
-    startTurn: allStores.usersStore.startTurn,
     finalProductSet: allStores.usersStore.finalProductSet,
-    currentPlayers: allStores.usersStore.currentPlayers,
     currentUser: allStores.usersStore.currentUser,
     updateSequence: allStores.usersStore.updateSequence,
-    stopTimer: allStores.usersStore.stopTimer,
     color: allStores.usersStore.color,
-    getDrawings: allStores.historyStore.getDrawings
 }))
 @observer
 class GameCanvas extends Component {
@@ -33,23 +27,6 @@ class GameCanvas extends Component {
         this.canvas.height = 1024;
         this.canvas.style.width = "712px";
         this.canvas.style.height = "712px";
-        this.props.socket.on('incomingUpdates', (x, y, isNewLine, color) => {
-            if (this.props.currentPlayers[0] === this.props.currentUser.userName) {
-                this.props.updateSequence(x, y, isNewLine, color);
-            }
-            this.draw(x, y, isNewLine, color);
-        })
-
-        this.props.socket.on('yourTurn', () => {
-            this.props.startTurn();
-        })
-
-        this.props.socket.on('finish', (drawing) => {
-            this.props.stopTimer()
-            this.props.setGameState(true);
-            this.props.getDrawings(this.props.currentUser.userName);
-            this.props.finalProductSet(drawing.sequences);
-        })
     }
 
     draw = (x, y, newLine, color) => {
@@ -68,7 +45,7 @@ class GameCanvas extends Component {
         if (!this.props.yourTurn) return;
         this.getPos(e);
         if (this.pressed) {
-            this.props.update(this.x, this.y, false);
+            this.draw(this.x, this.y, this.newLine, this.props.color)
         }
 
     }
