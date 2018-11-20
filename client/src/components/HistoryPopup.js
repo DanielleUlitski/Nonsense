@@ -23,12 +23,13 @@ class GameResults extends Component {
         this.canvas.height = 1024;
         this.canvas.style.width = "712px";
         this.canvas.style.height = "712px";
-        if(this.props.itemToDisplay) {
+        if (this.props.itemToDisplay) {
             this.renderDrawing();
         }
     }
 
     renderDrawing = () => {
+        if (this.props.itemToDisplay.sequences[0] === undefined) { return }
         if (this.i < this.props.itemToDisplay.sequences.length - 1) { requestAnimationFrame(this.renderDrawing) }
         let x = this.props.itemToDisplay.sequences[this.i].x;
         let y = this.props.itemToDisplay.sequences[this.i].y;
@@ -73,7 +74,7 @@ class GameResults extends Component {
         return (
             <div className="popup">
                 {this.renderingType()}
-                
+
                 <canvas className="drawing-field" ref="historyCanvas" />
                 <button onClick={this.displayPopup}>close</button>
             </div>

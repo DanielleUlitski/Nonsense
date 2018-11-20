@@ -50,9 +50,11 @@ class UsersStore {
         });
     }
 
-    @action startTurn = () => {
+    @action startTurn = (gameType) => {
         this.yourTurn = true;
-        this.timer = setTimeout(this.pass, 5000);
+        if(gameType === "drawing"){
+            this.timer = setTimeout(this.pass, 15000);
+        }
     }
 
     @action update = (x, y, isNewLine) => {
@@ -61,7 +63,7 @@ class UsersStore {
 
     @action pass = () => {
         clearTimeout(this.timer);
-        this.socket.emit('pass', this.currentPlayers);
+        this.socket.emit('pass');
         this.yourTurn = false;
     }
 
@@ -138,6 +140,7 @@ class UsersStore {
         this.gameType = null;
         this.yourTurn = false;
         this.sequences = []
+        this.gameinProgress = false;
         this.finalProduct = undefined;
         this.yourTurn = false;
         this.color = "rgba(0, 0, 0, 1)";
