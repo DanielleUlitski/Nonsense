@@ -56,6 +56,8 @@ io.sockets.on('connection', (socket) => {
           rooms['Lobby'].push(socket.user.userName);
           socket.session = socketId;
           socket.emit('login', user);
+          socket.emit('get drawings');
+          socket.emit('get stories');          
         }
       }
     })
@@ -185,7 +187,7 @@ io.sockets.on('connection', (socket) => {
           if (err) throw new Error(err);
           drawing.sequences = arr;
           drawing.save(() => {
-            io.sockets.in(socket.room).emit('finish', drawing.sequences);
+            io.sockets.in(socket.room).emit('finish', drawing);
           });
         })
         break;
@@ -200,7 +202,9 @@ io.sockets.on('connection', (socket) => {
 
   socket.on('finalize', () => {
     socket.leave(socket.room);
-    rooms[socket.room].splice(rooms[socket.room].indexOf(socket.user.userName), 1);
+    if (rooms[socket.room]) {
+      rooms[socket.room].splice(rooms[socket.room].indexOf(socket.user.userName), 1);
+    }
     if (!rooms[socket.room].length) {
       // rooms.splice(rooms.indexOf(socket.room), 1);
       delete rooms[socket.room]

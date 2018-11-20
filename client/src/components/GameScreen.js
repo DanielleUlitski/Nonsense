@@ -42,7 +42,7 @@ class GameScreen extends Component {
         this.props.start();
     }
 
-    finish = () => {
+    finish = (e) => {
         // this.gameinProgress = false;
         this.props.finish(this.props.match.params.gameType);
     }
@@ -81,7 +81,7 @@ class GameScreen extends Component {
                         {
                             this.gameinProgress ?
                                 <span>
-                                    <button onClick={this.finish} className="finish start-fin-btn">FINISH</button>
+                                    <a href="#" onClick={this.finish} className="finish start-fin-btn">FINISH</a>
                                 </span> :
                                 <span>
                                     <button onClick={this.invite} className="invite start-fin-btn" >Invite</button>

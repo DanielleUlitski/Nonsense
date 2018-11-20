@@ -17,7 +17,6 @@ class Login extends Component {
 
     componentDidMount() {
         this.props.socket.on("login", (user) => {
-            console.log(user);
             this.props.logIn(user);
         })
 
