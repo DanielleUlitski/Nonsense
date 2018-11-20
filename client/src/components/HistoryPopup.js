@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import '../styles/popup.css';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { observable } from 'mobx';
+
+@inject(allStores => ({
+    displayPopup: allStores.historyStore.displayPopup,
+    gameType: allStores.historyStore.gameType,
+    itemToDisplay: allStores.historyStore.itemToDisplay
+}))
 
 @observer
 class GameResults extends Component {
@@ -51,7 +57,7 @@ class GameResults extends Component {
 
     renderingType = () => {
         switch (this.props.gameType) {
-            case "drawing": this.renderDrawing();
+            case "drawing": return null
             case "story":
                 return <div className="story-field">{this.renderStory}</div>
             default:

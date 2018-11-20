@@ -5,14 +5,22 @@ import { observer, inject } from 'mobx-react';
 import '../styles/home.css'
 
 @inject(allStores => ({
-    socket: allStores.usersStore.socket
+    currentUser: allStores.usersStore.currentUser,
+    socket: allStores.usersStore.socket,
+    getDrawings: allStores.historyStore.getDrawings,
+    getStories: allStores.historyStore.getStories,
+    setUser: allStores.historyStore.setUser
 }))
 @observer
 class Home extends Component {
 
     componentDidMount() {
-        this.props.socket.on('loadRoom', (roomType) => {
-            
+        this.props.socket.on('get drawings', ()=>{
+            this.props.getDrawings(this.props.currentUser.userName)
+        })
+        
+        this.props.socket.on('get stories', ()=>{
+            this.props.getStories(this.props.currentUser.userName)
         })
     }
 

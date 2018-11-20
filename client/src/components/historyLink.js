@@ -1,4 +1,10 @@
 import React, { Component } from 'react';
+import { inject } from 'mobx-react';
+
+@inject(allStores => ({
+    displayPopup: allStores.historyStore.displayPopup
+}))
+
 
 class HistoryLink extends Component {
 
