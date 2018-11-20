@@ -53,9 +53,11 @@ class UsersStore {
         });
     }
 
-    @action startTurn = () => {
+    @action startTurn = (gameType) => {
         this.yourTurn = true;
-        this.timer = setTimeout(this.pass, 5000);
+        if(gameType === "drawing"){
+            this.timer = setTimeout(this.pass, 15000);
+        }
     }
 
     @action update = (x, y, isNewLine) => {
