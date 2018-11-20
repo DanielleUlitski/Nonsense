@@ -104,7 +104,7 @@ class GameScreen extends Component {
                     {
                         this.props.yourTurn ?
                             <span>
-                                <button onClick={this.pass} className="pass start-fin-btn">Pass</button>
+                                <button style={{ display: this.props.match.params.gameType==="story" ? "none" : "block" }} onClick={this.pass} className="pass start-fin-btn">Pass</button>
                                 <h4 className="indicator">Your Turn!</h4>
                                 {/* <span className="timer">{this.props.timer}</span> */}
                             </span> :

@@ -41,7 +41,7 @@ class GameCanvas extends Component {
         })
 
         this.props.socket.on('yourTurn', () => {
-            this.props.startTurn();
+            this.props.startTurn("drawing");
         })
 
         this.props.socket.on('finish', (drawing) => {

@@ -155,10 +155,21 @@ io.sockets.on('connection', (socket) => {
           room.artists.push(socket.user.userName);
           room.save();
         })
+      case "story":
+        Story.findById(roomId, (err, room) => {
+          if (err) throw new Error(err);
+          room.writers.push(socket.user.userName);
+          room.save();
+        })
     }
     User.findOne({ userName: socket.user.userName }, (err, user) => {
       if (err) throw new Error(err);
-      user.drawings.push(roomId);
+      switch (roomType) {
+        case "drawing":
+          user.drawings.push(roomId);
+        case "story":
+          user.stories.push(roomId);
+      } 
       user.save();
     })
     if (rooms[socket.room]) {
@@ -187,14 +198,15 @@ io.sockets.on('connection', (socket) => {
   })
 
   socket.on('updateStory', (sentence, key) => {
+    console.log(rooms[socket.room])
     Story.findById(socket.room, (err, story) => {
       if (err) throw new Error(err);
-      if (sentence[sentence.length-1] != "." && sentence[sentence.length-1] != ",") sentence += ".";
+      if (sentence[sentence.length - 1] != "." && sentence[sentence.length - 1] != ",") sentence += ".";
       let storyLetters = sentence.split("")
       story.text.push(storyLetters);
       story.save();
     })
-    let currentUserIndex = rooms[socket.room].indexOf(socket.userName);
+    let currentUserIndex = rooms[socket.room].indexOf(socket.user.userName);
     let nextUser;
     if (currentUserIndex >= rooms[socket.room].length - 1) {
       nextUser = rooms[socket.room][0];
