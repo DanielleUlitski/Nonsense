@@ -155,12 +155,15 @@ io.sockets.on('connection', (socket) => {
           room.artists.push(socket.user.userName);
           room.save();
         })
+        break;
       case "story":
         Story.findById(roomId, (err, room) => {
           if (err) throw new Error(err);
           room.writers.push(socket.user.userName);
           room.save();
         })
+        break;
+        default: null;
     }
     User.findOne({ userName: socket.user.userName }, (err, user) => {
       if (err) throw new Error(err);
@@ -169,7 +172,7 @@ io.sockets.on('connection', (socket) => {
           user.drawings.push(roomId);
         case "story":
           user.stories.push(roomId);
-      } 
+      }
       user.save();
     })
     if (rooms[socket.room]) {

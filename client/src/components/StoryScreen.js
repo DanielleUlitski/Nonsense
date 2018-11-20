@@ -40,15 +40,12 @@ class StoryScreen extends Component {
         this.canvas.style.height = "712px";
         
         this.props.socket.on('nextTurn', (key) => {
+            this.props.startTurn('story')
             this.showKey(key);
         })
 
         this.props.socket.on('userJoined', (arr) => {
             this.props.getPlayers(arr)
-        })
-
-        this.props.socket.on('yourTurn', (key) => {
-            this.props.startTurn("story");
         })
 
         this.props.socket.on('finish', (story) => {
@@ -59,7 +56,7 @@ class StoryScreen extends Component {
 
     showKey = (key) => {
         let ctx = this.canvas.getContext("2d")
-        ctx.font = "30px ../styles/crawley.regular.ttf";
+        ctx.font = "1.2em crawley";
         ctx.fillText(key, 10, this.yPositions);
         this.yPositions += 40;
         this.previosKey = key;
@@ -77,7 +74,7 @@ class StoryScreen extends Component {
             }, 2000);
         } else {
             let ctx = this.canvas.getContext("2d")
-            ctx.font = "13px ariel";
+            ctx.font = "1.2em crawley";
             ctx.fillText(this.previosKey+this.sentenceInp, 10, this.yPositions);
             this.yPositions += 40;
             // ctx.fillText(this.keyInp, 10, this.yPositions);

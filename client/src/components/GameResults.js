@@ -27,9 +27,11 @@ class GameResults extends Component {
             this.resultCanvas.style.height = "712px";
             switch (this.props.gameType) {
                 case "drawing":
-                    this.renderDrawing()
+                    this.renderDrawing();
+                    break;
                 case "story":
                     this.renderStory()
+                    break;
             }
         }
     }
@@ -71,7 +73,7 @@ class GameResults extends Component {
     renderStory = () => {
         if (this.i < this.props.finalProduct.length - 1) { requestAnimationFrame(this.renderStory) }
         this.write(this.props.finalProduct[this.i])
-        this.i ++
+        this.i++
     }
 
     finalize = () => {
