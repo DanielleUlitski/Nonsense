@@ -9,7 +9,7 @@ import '../styles/canvas.css'
     yourTurn: allStores.usersStore.yourTurn,
     startTurn: allStores.usersStore.startTurn,
     finalProductSet: allStores.usersStore.finalProductSet,
-    getStoreis: allStores.historyStore.getStoreis,
+    getStories: allStores.historyStore.getStories,
     currentUser: allStores.usersStore.currentUser,
     pass: allStores.usersStore.pass
 }))
@@ -23,22 +23,22 @@ class StoryScreen extends Component {
     @observable canvas = null;
 
     yPositions = 50;
-    
+
     @observable sentenceInp = "";
-    
+
     @observable keyInp = "";
 
     @observable previosKey = "";
-    
+
     @observable userName = this.props.currentUser.userName
-    
+
     componentDidMount() {
         this.canvas = this.refs.canvas
         this.canvas.width = 1024;
         this.canvas.height = 1024;
         this.canvas.style.width = "712px";
         this.canvas.style.height = "712px";
-        
+
         this.props.socket.on('nextTurn', (key) => {
             this.props.startTurn('story')
             this.showKey(key);
@@ -50,7 +50,7 @@ class StoryScreen extends Component {
 
         this.props.socket.on('finish', (story) => {
             this.props.finalProductSet(story.text, "story");
-            this.props.getStoreis(this.userName)
+            this.props.getStories(this.userName)
         })
     }
 
@@ -75,11 +75,11 @@ class StoryScreen extends Component {
         } else {
             let ctx = this.canvas.getContext("2d")
             ctx.font = "1.2em crawley";
-            ctx.fillText(this.previosKey+this.sentenceInp, 10, this.yPositions);
+            ctx.fillText(this.previosKey + " " + this.sentenceInp, 10, this.yPositions);
             this.yPositions += 40;
             // ctx.fillText(this.keyInp, 10, this.yPositions);
             // this.yPositions += 40;
-            this.props.socket.emit('updateStory', (this.previosKey+" "+this.sentenceInp), this.keyInp);
+            this.props.socket.emit('updateStory', (this.previosKey + " " + this.sentenceInp), this.keyInp);
             this.props.pass();
             this.sentenceInp = "";
             this.keyInp = "";
