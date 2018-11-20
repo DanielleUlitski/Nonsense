@@ -18,20 +18,26 @@ import ColorPallete from './ColorPallete';
     yourTurn: allStores.usersStore.yourTurn,
     timer: allStores.usersStore.timer,
     finalProduct: allStores.usersStore.finalProduct,
-    resetVariables: allStores.usersStore.resetVariables
+    resetVariables: allStores.usersStore.resetVariables,
+    themeWord: allStores.usersStore.word,
+    startGame: allStores.usersStore.startGame,
+    gameinProgress: allStores.usersStore.gameinProgress
 }))
 
 @observer
 class GameScreen extends Component {
-    @observable gameinProgress = false;
     @observable gameEnded = false;
     @observable bool = false;
 
     componentDidMount() {
         this.props.socket.on('start', () => {
-            this.gameinProgress = true;
+            this.props.startGame()
             this.gameEnded = false;
         })
+    }
+
+    componentWillUnmount() {
+        this.props.socket.emit('leaveRoom');
     }
 
     @action invite = () => {
@@ -42,7 +48,7 @@ class GameScreen extends Component {
         this.props.start();
     }
 
-    finish = (e) => {
+    finish = () => {
         // this.gameinProgress = false;
         this.props.finish(this.props.match.params.gameType);
     }
@@ -60,12 +66,12 @@ class GameScreen extends Component {
             case "drawing":
                 return (
                     <span>
-                        <GameCanvas setGameState={this.setGameState} gameinProgress={this.gameinProgress} />
+                        <GameCanvas setGameState={this.setGameState} gameinProgress={this.props.gameinProgress} />
                         <ColorPallete />
                     </span>
                 )
             case "story":
-                return <StoryScreen setGameState={this.setGameState} gameinProgress={this.gameinProgress} />
+                return <StoryScreen setGameState={this.setGameState} gameinProgress={this.props.gameinProgress} />
             default:
                 return null;
         }
@@ -77,11 +83,12 @@ class GameScreen extends Component {
                 {(this.props.finalProduct) ? <GameResults gameType={this.props.match.params.gameType} /> : null}
                 <div className="game-info">
                     <h2>LET THE NONSENSE BEGIN!</h2>
+                    {this.props.gameinProgress ? <span className="themeWord">{this.props.themeWord}</span> : null}
                     <div style={{ display: (this.props.currentPlayers[0] === this.props.currentUser.userName) ? "block" : "none" }} classNane="start-finish">
                         {
-                            this.gameinProgress ?
+                            this.props.gameinProgress ?
                                 <span>
-                                    <a href="#" onClick={this.finish} className="finish start-fin-btn">FINISH</a>
+                                    <button onClick={this.finish} className="finish start-fin-btn">FINISH</button>
                                 </span> :
                                 <span>
                                     <button onClick={this.invite} className="invite start-fin-btn" >Invite</button>
