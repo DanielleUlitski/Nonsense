@@ -1,23 +1,46 @@
-#home-container {
+.home{
+    position: relative;
     display: grid;
-
     height: 100vh;
-    grid-template-columns: 1.5fr 6fr 1.5fr; 
-    grid-template-rows:  0.5fr 1fr 8fr 0.5fr; 
+    grid-template-columns: 10% 40% 40% 10%; 
+    grid-template-rows: 1fr 8fr; 
 
     grid-template-areas:
-    " . . . "
-    " . h . "
-    " . h . "
-    " . . . ";
-    grid-gap: 10px
-}
-
-.home{
-    display: flex;
-    align-content:center; 
+    " . t t . "
+    " . d s . ";
+    grid-gap: 20px;
     text-align: center;
-    margin: auto;
-    grid-area: h;
+    /* overflow: hidden; */
 }
 
+.title{
+    grid-area: t
+}
+
+#drawing {
+    grid-area: d
+}
+
+#story {
+    grid-area: s
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
+
+.game-link{
+    position: relative;
+}

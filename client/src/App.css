@@ -51,12 +51,6 @@ body{
 
 .game-title {
     font-size: 1.2em;
-    padding-left: 26%;
-}
-
-.game-link {
-    float: left;
-    clear: none;
 }
 
 .user-display {

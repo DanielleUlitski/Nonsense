@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { inject } from 'mobx-react';
+import '../styles/btn.css'
+import '../styles/home.css'
 
 @inject(allStores => ({
     newRoom: allStores.usersStore.newRoom
@@ -13,10 +15,25 @@ class GameLink extends Component {
 
     render() {
         return (
-            <div className="game-link">
+            <span className="game-link" id={this.props.gameType}>
                 <span className="game-title">{this.props.gameType}</span> <br />
-                <Link onClick={this.newRoom} to={this.props.link}><img className="image-link" src={this.props.src} /></Link>
-            </div>
+                <img className="image-link" src={this.props.src} />
+                <p className="description">
+                    {this.props.gameType === "drawing" ? "In this game you will draw a shared drawing with your freinds." : "In this game you can write a continud story with all of you freinds"}
+                </p>
+                <div className="btn-holder">
+                    <Link onClick={this.newRoom} to={this.props.link}>
+                        <div className="button">
+                            <p className="btnText">PLAY NOW</p>
+                            <div className="btnTwo play">
+                                <p className="btnText2">
+                                    <img className="play-img" src="https://arabesque.com/wp-content/uploads/2017/03/play_icon_300.png" alt="start"/>
+                                </p>
+                            </div>
+                        </div>
+                    </Link>
+                </div>
+            </span>
         )
     }
 }
