@@ -1,0 +1,23 @@
+#home-container {
+    display: grid;
+
+    height: 100vh;
+    grid-template-columns: 1.5fr 6fr 1.5fr; 
+    grid-template-rows:  0.5fr 1fr 8fr 0.5fr; 
+
+    grid-template-areas:
+    " . . . "
+    " . h . "
+    " . h . "
+    " . . . ";
+    grid-gap: 10px
+}
+
+.home{
+    display: flex;
+    align-content:center; 
+    text-align: center;
+    margin: auto;
+    grid-area: h;
+}
+
