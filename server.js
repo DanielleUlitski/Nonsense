@@ -140,7 +140,7 @@ io.sockets.on('connection', (socket) => {
     } else if (!rooms[socket.room].length) {
       delete rooms[socket.room]
     }
-    io.sockets.in(`${socket.room}`).emit('userJoined', rooms[socket.room]);
+    // io.sockets.in(`${socket.room}`).emit('userJoined', rooms[socket.room]);
     socket.leave(socket.room);
     socket.room = 'Lobby';
     socket.join('Lobby');
