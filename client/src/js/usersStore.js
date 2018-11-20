@@ -61,7 +61,7 @@ class UsersStore {
 
     @action pass = () => {
         clearTimeout(this.timer);
-        this.socket.emit('pass', this.currentPlayers);
+        this.socket.emit('pass');
         this.yourTurn = false;
     }
 
@@ -138,6 +138,7 @@ class UsersStore {
         this.gameType = null;
         this.yourTurn = false;
         this.sequences = []
+        this.gameinProgress = false;
         this.finalProduct = undefined;
         this.yourTurn = false;
         this.color = "rgba(0, 0, 0, 1)";
