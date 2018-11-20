@@ -51,7 +51,7 @@ class GameCanvas extends Component {
         this.props.socket.on('finish', (drawing) => {
             this.props.stopTimer()
             this.props.setGameState(true);
-            this.props.finalProductSet(drawing);
+            this.props.finalProductSet(drawing.sequences);
         })
     }
 
