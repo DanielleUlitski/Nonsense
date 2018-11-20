@@ -45,12 +45,6 @@ class GameScreen extends Component {
     finish = (e) => {
         // this.gameinProgress = false;
         this.props.finish(this.props.match.params.gameType);
-        e.target.href = this.refs.canvas.toDataURL();
-        e.target.download = "mypainting.png";
-    }
-
-    setRefs = (refs) => {
-        this.refs = refs
     }
 
     setGameState = (bool) => {

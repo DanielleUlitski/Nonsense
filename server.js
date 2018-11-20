@@ -56,6 +56,8 @@ io.sockets.on('connection', (socket) => {
           rooms['Lobby'].push(socket.user.userName);
           socket.session = socketId;
           socket.emit('login', user);
+          socket.emit('get drawings');
+          socket.emit('get stories');          
         }
       }
     })

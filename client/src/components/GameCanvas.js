@@ -40,8 +40,6 @@ class GameCanvas extends Component {
             this.draw(x, y, isNewLine, color);
         })
 
-        this.props.setRefs(this.refs)
-
         this.props.socket.on('userJoined', (arr) => {
             this.props.getPlayers(arr)
         })
