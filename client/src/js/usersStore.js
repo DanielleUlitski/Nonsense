@@ -21,8 +21,20 @@ class UsersStore {
 
     @observable color = "rgba(0, 0, 0, 1)";
 
+    @observable word = undefined;
+
+    @observable gameinProgress = false;
+
+    @action startGame = () => {
+        this.gameinProgress = true;
+    }
+
     @action finalProductSet = (finalProduct) => {
         this.finalProduct = finalProduct;
+    }
+
+    @action saveTheme = (word) => {
+        this.word = word;
     }
 
     @action changeColor = (color) => {
@@ -54,6 +66,7 @@ class UsersStore {
     }
 
     @action getPlayers = (arr) => {
+        console.log(arr);
         this.currentPlayers = arr;
     }
 
@@ -99,7 +112,7 @@ class UsersStore {
 
     newStory = () => {
         axios.post('/api/story/openstory', { userName: this.currentUser.userName }).then((story) => {
-            this.socket.emit('newRoom', story.id, "story");
+            this.socket.emit('newRoom', story.data._id, "story");
         })
     }
 
@@ -129,7 +142,7 @@ class UsersStore {
         this.yourTurn = false;
         this.color = "rgba(0, 0, 0, 1)";
         this.stopTimer()
-        this.socket.emit('finalize');
+        // this.socket.emit('finalize');
     }
 
     @action logOut = () => {

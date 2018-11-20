@@ -5,6 +5,7 @@ import { inject } from 'mobx-react';
 import Home from './components/Home';
 import History from './components/History';
 import GameScreen from './components/GameScreen';
+import InviteModal from './components/InviteModal';
 import Login from './components/Login';
 
 @inject(allStores => ({
@@ -28,6 +29,7 @@ class App extends Component {
             <li className="user-display">
               {this.props.currentUser ? this.props.currentUser.userName : null}
             </li>
+            <InviteModal />
           </ul>
 
           <Login />

@@ -65,19 +65,12 @@ class GameResults extends Component {
             default:
                 return null;
         }
-        // if (this.props.gameType === "drawing") {
-        //     return <canvas className="drawing-field" ref="resultCanvas" />
-        // }
-        // if (this.props.gameType === "story") {
-        //     return <div className="story-field">{this.renderStory}</div>
-        // }
     }
 
     render() {
         return (
             <div className="popup">
                 <Link to="/"><span onClick={this.finalize}>Home</span></Link>
-                {/* <canvas className="drawing-field" ref="resultCanvas" /> */}
                 {this.renderFinal()}
             </div>
         )

@@ -11,6 +11,7 @@ mongoose.connect('mongodb://nonsensus:zyaHJa4YzsZPDQ5@ds127961.mlab.com:27961/no
 const usersAPI = require('./routes/usersAPI')
 const storyAPI = require('./routes/storyAPI')
 const drawingAPI = require('./routes/drawingAPI')
+const themeWords = require('./routes/themeWords');
 const users = [];
 const rooms = { "Lobby": [] };
 const User = require('./models/UserModel')
@@ -32,6 +33,11 @@ const findWithAttr = (array, attr, value) => {
     }
   }
   return -1;
+}
+
+const makeRandomWord = () => {
+  let randomIndex = Math.floor(Math.random() * themeWords.length);
+  return themeWords[randomIndex];
 }
 
 io.sockets.on('connection', (socket) => {
@@ -57,7 +63,7 @@ io.sockets.on('connection', (socket) => {
           socket.session = socketId;
           socket.emit('login', user);
           socket.emit('get drawings');
-          socket.emit('get stories');          
+          socket.emit('get stories');
         }
       }
     })
@@ -107,6 +113,7 @@ io.sockets.on('connection', (socket) => {
     rooms[newRoom].push(socket.user.userName);
     socket.join(newRoom);
     socket.emit('userJoined', [socket.user.userName]);
+    socket.emit('themeWord', makeRandomWord());
   })
 
   socket.on('sendInvite', (user, roomType) => {
@@ -124,6 +131,22 @@ io.sockets.on('connection', (socket) => {
     })
   })
 
+  socket.on('leaveRoom', () => {
+    if (rooms[socket.room]) {
+      rooms[socket.room].splice(rooms[socket.room].indexOf(socket.user.userName), 1);
+    }
+    if (rooms[socket.room] === undefined) {
+
+    } else if (!rooms[socket.room].length) {
+      delete rooms[socket.room]
+    }
+    io.sockets.in(`${socket.room}`).emit('userJoined', rooms[socket.room]);
+    socket.leave(socket.room);
+    socket.room = 'Lobby';
+    socket.join('Lobby');
+    rooms['Lobby'].push(socket.user.userName);
+  })
+
   socket.on('joinRoom', (roomType, roomId) => {
     switch (roomType) {
       case "drawing":
@@ -138,13 +161,21 @@ io.sockets.on('connection', (socket) => {
       user.drawings.push(roomId);
       user.save();
     })
-    socket.leave('Lobby');
+    if (rooms[socket.room]) {
+      rooms[socket.room].splice(rooms[socket.room].indexOf(socket.user.userName), 1);
+      io.sockets.in(`${socket.room}`).emit('userJoined', rooms[socket.room]);
+    }
+    if (rooms[socket.room] === undefined) {
+
+    } else if (!rooms[socket.room].length && socket.room != 'Lobby') {
+      delete rooms[socket.room]
+    }
+    socket.leave(socket.room);
     socket.room = roomId;
-    rooms['Lobby'].splice(rooms['Lobby'].indexOf(socket.user.userName), 1);
     socket.join(roomId);
     rooms[roomId].push(socket.user.userName);
     io.sockets.in(roomId).emit('userJoined', rooms[roomId]);
-    socket.emit('loadRoom', socket.room)
+    socket.emit('themeWord', makeRandomWord());
   })
 
   socket.on('start', () => {
@@ -158,22 +189,33 @@ io.sockets.on('connection', (socket) => {
   socket.on('updateStory', (sentence, key) => {
     Story.findById(socket.room, (err, story) => {
       if (err) throw new Error(err);
-      story.text.push(sentence);
+      if (sentence[sentence.length-1] != "." && sentence[sentence.length-1] != ",") sentence += ".";
+      let storyLetters = sentence.split("")
+      story.text.push(storyLetters);
       story.save();
     })
-    io.sockets.in(socket.room).emit('storyUpdates', key);
+    let currentUserIndex = rooms[socket.room].indexOf(socket.userName);
+    let nextUser;
+    if (currentUserIndex >= rooms[socket.room].length - 1) {
+      nextUser = rooms[socket.room][0];
+    }
+    else {
+      nextUser = rooms[socket.room][currentUserIndex + 1];
+    }
+    let socketId = users[findWithAttr(users, "userName", nextUser)].session
+    io.to(`${socketId}`).emit('nextTurn', key);
   })
 
-  socket.on('pass', (usersInRoom) => {
+  socket.on('pass', () => {
     let nextUserIndex;
-    let currentUserIndex = usersInRoom.indexOf(socket.user.userName);
-    if (currentUserIndex >= usersInRoom.length - 1) {
+    let currentUserIndex = rooms[socket.room].indexOf(socket.user.userName);
+    if (currentUserIndex >= rooms[socket.room].length - 1) {
       nextUserIndex = 0;
     }
     else {
       nextUserIndex = currentUserIndex + 1;
     }
-    let nextUser = users[findWithAttr(users, "userName", usersInRoom[nextUserIndex])];
+    let nextUser = users[findWithAttr(users, "userName", rooms[socket.room][nextUserIndex])];
     if (nextUser) {
       io.to(`${nextUser.session}`).emit('yourTurn');
     }
@@ -192,7 +234,8 @@ io.sockets.on('connection', (socket) => {
         })
         break;
       case "story":
-        Story.findOne({ _id: socket.room }, (story) => {
+        Story.findOne({ _id: socket.room }, (err, story) => {
+          if (err) throw new Error(err);
           io.sockets.in(socket.room).emit('finish', story);
         })
         break;
@@ -200,16 +243,18 @@ io.sockets.on('connection', (socket) => {
     }
   })
 
-  socket.on('finalize', () => {
-    socket.leave(socket.room);
-    if (rooms[socket.room]) {
-      rooms[socket.room].splice(rooms[socket.room].indexOf(socket.user.userName), 1);
-    }
-    if (!rooms[socket.room].length) {
-      // rooms.splice(rooms.indexOf(socket.room), 1);
-      delete rooms[socket.room]
-    }
-    console.log(rooms);
-    socket.room = 'Lobby';
-  })
+  // socket.on('finalize', () => {
+  //   socket.leave(socket.room);
+  //   if (rooms[socket.room]) {
+  //     rooms[socket.room].splice(rooms[socket.room].indexOf(socket.user.userName), 1);
+  //   }
+  //   if (!rooms[socket.room].length) {
+  //     // rooms.splice(rooms.indexOf(socket.room), 1);
+  //     delete rooms[socket.room]
+  //   }
+  //   socket.room = 'Lobby';
+  //   socket.join('Lobby');
+  //   rooms['Lobby'].push(socket.user.userName);
+  //   console.log(rooms);
+  // })
 })

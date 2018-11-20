@@ -16,10 +16,10 @@ router.get('/:userName', (req,res)=>{
 router.post('/openstory', (req,res)=>{
     let newStory = new Story({})
     newStory.writers.push(req.body.userName);
-    newStory.save().exec((err, story)=>{
+    newStory.save(((err, story)=>{
         if (err) throw new Error(err);
         res.send(story)
-    })
+    }))
 })
 
 router.post('/endstory', (req, res) => {

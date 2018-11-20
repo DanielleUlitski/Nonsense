@@ -9,7 +9,8 @@ import GameScreen from './GameScreen';
     socket: allStores.usersStore.socket,
     setType: allStores.usersStore.setType,
     gameType: allStores.usersStore.gameType,
-    getPlayers: allStores.usersStore.getPlayers
+    getPlayers: allStores.usersStore.getPlayers,
+    gameinProgress: allStores.usersStore.gameinProgress
 }))
 @observer
 class InviteModal extends Component {
@@ -21,18 +22,18 @@ class InviteModal extends Component {
         room: null,
     }
 
-    @action recieveInvite = (userName, roomId) => {
+    @action recieveInvite = (userName, roomId, roomType) => {
         this.invite.userName = userName;
         this.invite.room = roomId;
+        this.props.setType(roomType);
         this.pending = true;
     }
 
     componentDidMount() {
         this.props.socket.on('gotInvite', (userName, roomId, roomType) => {
-            this.invite.userName = userName;
-            this.invite.room = roomId;
-            this.props.setType(roomType);
-            this.pending = true;
+            if (!this.props.gameinProgress) {
+                this.recieveInvite(userName, roomId, roomType);
+            }
         })
     }
 
