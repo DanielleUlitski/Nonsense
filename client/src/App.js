@@ -32,7 +32,7 @@ class App extends Component {
 
           <Login />
           <Route exact path="/" component={Home} />
-          <Route exact path="/history" component={History} />
+          <Route exact path="/history" render={() => <History />} />
           <Route exact path="/game/:gameType" render={({ match }) => <GameScreen match={match} />} />
 
         </div>
