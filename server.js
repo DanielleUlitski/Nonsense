@@ -158,22 +158,33 @@ io.sockets.on('connection', (socket) => {
   socket.on('updateStory', (sentence, key) => {
     Story.findById(socket.room, (err, story) => {
       if (err) throw new Error(err);
-      story.text.push(sentence);
+      if (sentence[sentence.length-1] != "." && sentence[sentence.length-1] != ",") sentence += ".";
+      let storyLetters = sentence.split("")
+      story.text.push(storyLetters);
       story.save();
     })
-    io.sockets.in(socket.room).emit('storyUpdates', key);
+    let currentUserIndex = rooms[socket.room].indexOf(socket.userName);
+    let nextUser;
+    if (currentUserIndex >= rooms[socket.room].length - 1) {
+      nextUser = rooms[socket.room][0];
+    }
+    else {
+      nextUser = rooms[socket.room][currentUserIndex + 1];
+    }
+    let socketId = users[findWithAttr(users, "userName", nextUser)].session
+    io.to(`${socketId}`).emit('nextTurn', key);
   })
 
-  socket.on('pass', (usersInRoom) => {
+  socket.on('pass', () => {
     let nextUserIndex;
-    let currentUserIndex = usersInRoom.indexOf(socket.user.userName);
-    if (currentUserIndex >= usersInRoom.length - 1) {
+    let currentUserIndex = rooms[socket.room].indexOf(socket.user.userName);
+    if (currentUserIndex >= rooms[socket.room].length - 1) {
       nextUserIndex = 0;
     }
     else {
       nextUserIndex = currentUserIndex + 1;
     }
-    let nextUser = users[findWithAttr(users, "userName", usersInRoom[nextUserIndex])];
+    let nextUser = users[findWithAttr(users, "userName", rooms[socket.room][nextUserIndex])];
     if (nextUser) {
       io.to(`${nextUser.session}`).emit('yourTurn');
     }

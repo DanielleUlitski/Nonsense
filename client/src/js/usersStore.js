@@ -99,7 +99,7 @@ class UsersStore {
 
     newStory = () => {
         axios.post('/api/story/openstory', { userName: this.currentUser.userName }).then((story) => {
-            this.socket.emit('newRoom', story.id, "story");
+            this.socket.emit('newRoom', story.data._id, "story");
         })
     }
 
