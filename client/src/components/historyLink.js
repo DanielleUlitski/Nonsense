@@ -21,6 +21,7 @@ class HistoryLink extends Component {
             case "story":
                 this.renderStory()
                 break;
+            default: return null;
         }
     }
 
@@ -80,6 +81,7 @@ class HistoryLink extends Component {
             case "story":
                 this.props.displayPopup(this.props.story, this.props.gameType)
                 break;
+            default: return null;
         }
     }
 

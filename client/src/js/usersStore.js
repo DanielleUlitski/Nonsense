@@ -105,6 +105,7 @@ class UsersStore {
             case "story":
                 this.newStory();
                 break;
+            default: return null;
         }
     }
 

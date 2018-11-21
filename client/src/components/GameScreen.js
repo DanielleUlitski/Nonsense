@@ -6,7 +6,6 @@ import '../styles/gameScreen.css';
 import GameCanvas from './GameCanvas';
 import StoryScreen from './StoryScreen';
 import SendInvite from './SendInviteModal';
-import ColorPallete from './ColorPallete';
 
 @inject(allStores => ({
     start: allStores.usersStore.start,

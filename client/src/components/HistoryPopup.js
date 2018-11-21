@@ -30,6 +30,7 @@ class GameResults extends Component {
                 case "story":
                     this.renderStory()
                     break;
+                default: return null;
             }
         }
     }

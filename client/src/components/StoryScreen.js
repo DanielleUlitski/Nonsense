@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { observable, action } from 'mobx';
 import '../styles/canvas.css'
+import '../styles/storyScreen.css'
+import '../styles/btn.css'
 
 @inject(allStores => ({
     socket: allStores.usersStore.socket,
@@ -13,6 +15,7 @@ import '../styles/canvas.css'
     currentUser: allStores.usersStore.currentUser,
     pass: allStores.usersStore.pass
 }))
+
 @observer
 class StoryScreen extends Component {
 
@@ -75,8 +78,7 @@ class StoryScreen extends Component {
             ctx.font = "1.2em crawley";
             ctx.fillText(this.previosKey + " " + this.sentenceInp, 10, this.yPositions);
             this.yPositions += 40;
-            // ctx.fillText(this.keyInp, 10, this.yPositions);
-            // this.yPositions += 40;
+            
             this.props.socket.emit('updateStory', (this.previosKey + " " + this.sentenceInp), this.keyInp);
             this.props.pass();
             this.sentenceInp = "";
@@ -91,9 +93,21 @@ class StoryScreen extends Component {
                 <span>{this.displayError}</span>
                 <div style={{ display: this.props.gameinProgress ? "block" : "none" }}>
                     <canvas ref="canvas" className="crawley-font" />
-                    <textarea rows="4" cols="50" className="sentence" value={this.sentenceInp} onChange={this.handleInpt} name="sentenceInp" placeholder="write you sentence" />
-                    <input className="keyword" vakue={this.keyInp} onChange={this.handleInpt} name="keyInp" placeholder="write the key word for the next player" />
-                    <button onClick={this.send}>SEND</button>
+                    <div className="text-area">
+                        <input className="sentence" value={this.sentenceInp} onChange={this.handleInpt} name="sentenceInp" placeholder="write you sentence" /><br/>
+                        <input className="keyword" value={this.keyInp} onChange={this.handleInpt} name="keyInp" placeholder="write the key word for the next player" />
+                        
+                        <div className="btn-holder btn-holder-send" onClick={this.send}>
+                            <div className="button button-send">
+                                <p className="btnText">send</p>
+                                <div className="btnTwo">
+                                    <p className="btnText2">
+                                        <div className="send-img"></div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

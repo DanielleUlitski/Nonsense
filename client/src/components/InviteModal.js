@@ -3,7 +3,6 @@ import { observable, action } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom'
 import '../styles/popup.css';
-import GameScreen from './GameScreen';
 
 @inject(allStores => ({
     socket: allStores.usersStore.socket,
