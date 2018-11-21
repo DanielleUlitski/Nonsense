@@ -42,7 +42,7 @@
     transition : .3s;
 }
 .btnText2 {
-    margin-top : 20%;
+    margin-top : 17%;
     margin-right : -130px;
     color : #FFF;
 }
@@ -54,13 +54,4 @@
 }
 .button:active { /*Clicked and held*/
     box-shadow: 0px 5px 6px rgba(0,0,0,0.3);
-}
-
-.play{
-    background-color: rgba(94, 224, 7, 0.61);
-}
-
-.play-img {
-    width: 40px;
-    height: 40px;
 }

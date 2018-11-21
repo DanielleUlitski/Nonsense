@@ -3,14 +3,14 @@
     display: grid;
     height: 100vh;
     grid-template-columns: 10% 40% 40% 10%; 
-    grid-template-rows: 1fr 8fr; 
+    grid-template-rows: 1fr 6fr; 
 
     grid-template-areas:
     " . t t . "
     " . d s . ";
     grid-gap: 20px;
     text-align: center;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 .title{
@@ -43,4 +43,18 @@ a:active {
 
 .game-link{
     position: relative;
+}
+
+.play-img {
+    background-image:url("./icons/play-icon.png");
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+}
+
+.play{
+    background-color: rgba(94, 224, 7, 0.61);
 }

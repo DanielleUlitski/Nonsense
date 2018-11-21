@@ -27,7 +27,7 @@ class GameLink extends Component {
                             <p className="btnText">PLAY NOW</p>
                             <div className="btnTwo play">
                                 <p className="btnText2">
-                                    <img className="play-img" src="https://arabesque.com/wp-content/uploads/2017/03/play_icon_300.png" alt="start"/>
+                                    <div className="play-img"></div>
                                 </p>
                             </div>
                         </div>
