@@ -193,6 +193,7 @@ io.sockets.on('connection', (socket) => {
   })
 
   socket.on('start', () => {
+    socket.emit('yourTurn');
     io.sockets.in(socket.room).emit('start');
   })
 

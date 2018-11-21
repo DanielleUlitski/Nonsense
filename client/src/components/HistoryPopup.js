@@ -59,27 +59,27 @@ class GameResults extends Component {
         ctx.stroke();
     }
 
-    yPosition = 50;
+    yPosition = 30;
     xPosition = 10;
 
     renderStory = () => {
         if (this.props.itemToDisplay.text[0] === undefined) { return }
         if (this.i < this.props.itemToDisplay.text.length - 1) { requestAnimationFrame(this.renderStory) }
         this.write(this.props.itemToDisplay.text[this.i])
-        this.xPosition += 8;
+        this.xPosition += 15;
         this.i++
     }
 
     write = (letter) => {
         const ctx = this.canvas.getContext('2d');
         if (this.i === 0) {
-            ctx.font = "30px floralCapitals";
+            ctx.font = "20pt appFont";
         } else {
-            ctx.font = "30px crawley"
+            ctx.font = "20pt appFont"
         }
-        if (letter === '.' || letter === ',') {
+        if (letter === '.' || letter === ',' || letter === '!' || letter === '?') {
             ctx.fillText(letter, this.xPosition, this.yPosition);
-            this.yPosition += 40;
+            this.yPosition += 30;
             this.xPosition = 10;
         } else {
             ctx.fillText(letter, this.xPosition, this.yPosition);
