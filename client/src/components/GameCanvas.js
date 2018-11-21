@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { observable, action } from 'mobx';
 import '../styles/canvas.css'
+import ColorPallete from './ColorPallete';
 
 @inject(allStores => ({
     update: allStores.usersStore.update,
@@ -31,8 +32,7 @@ class GameCanvas extends Component {
         this.canvas = this.refs.canvas
         this.canvas.width = 1024;
         this.canvas.height = 1024;
-        this.canvas.style.width = "712px";
-        this.canvas.style.height = "712px";
+
         this.props.socket.on('incomingUpdates', (x, y, isNewLine, color) => {
             if (this.props.currentPlayers[0] === this.props.currentUser.userName) {
                 this.props.updateSequence(x, y, isNewLine, color);
@@ -98,7 +98,10 @@ class GameCanvas extends Component {
 
     render() {
         return (
-            <canvas style={{ display: this.props.gameinProgress ? "block" : "none" }} onTouchMove={this.mouseMove} onTouchEnd={this.mouseUp} onTouchStart={this.mouseDown} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} onMouseDown={this.mouseDown} ref="canvas" />
+            <div style={{ display: this.props.gameinProgress ? "block" : "none" }}>
+                <canvas onTouchMove={this.mouseMove} onTouchEnd={this.mouseUp} onTouchStart={this.mouseDown} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} onMouseDown={this.mouseDown} ref="canvas" />
+                <ColorPallete />
+            </div>
         );
     }
 }

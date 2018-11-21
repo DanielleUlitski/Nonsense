@@ -34,7 +34,7 @@ class Home extends Component {
                 <div className="title">
                     <h2 className="home-title">Nonsense</h2>
                     <p className="description">
-                        This is an app with all the nonsense you need,
+                        This is an app with all the nonsense you need.
                     </p>
                 </div>
                     <GameLink src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQDbEdqKqmQOuY5bTmcVA-sEOHsWFqM_asYBIYEcypabLO5QIo0g" link="/game/drawing" gameType="drawing" />

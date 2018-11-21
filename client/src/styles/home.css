@@ -1,7 +1,7 @@
 .home{
     position: relative;
     display: grid;
-    height: 100vh;
+    height: 95vh;
     grid-template-columns: 10% 40% 40% 10%; 
     grid-template-rows: 1fr 6fr; 
 
@@ -10,7 +10,6 @@
     " . d s . ";
     grid-gap: 20px;
     text-align: center;
-    overflow: hidden;
 }
 
 .title{
