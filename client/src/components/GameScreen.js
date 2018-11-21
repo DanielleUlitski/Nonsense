@@ -6,7 +6,6 @@ import '../styles/gameScreen.css';
 import GameCanvas from './GameCanvas';
 import StoryScreen from './StoryScreen';
 import SendInvite from './SendInviteModal';
-import ColorPallete from './ColorPallete';
 
 @inject(allStores => ({
     start: allStores.usersStore.start,
@@ -69,12 +68,7 @@ class GameScreen extends Component {
     renderGameBoard = (gameType) => {
         switch (gameType) {
             case "drawing":
-                return (
-                    <span>
-                        <GameCanvas setGameState={this.setGameState} gameinProgress={this.props.gameinProgress} />
-                        <ColorPallete />
-                    </span>
-                )
+                return <GameCanvas setGameState={this.setGameState} gameinProgress={this.props.gameinProgress} />
             case "story":
                 return <StoryScreen setGameState={this.setGameState} gameinProgress={this.props.gameinProgress} />
             default:
@@ -87,35 +81,87 @@ class GameScreen extends Component {
             <div className="game-screen">
                 {(this.props.finalProduct) ? <GameResults gameType={this.props.match.params.gameType} /> : null}
                 <div className="game-info">
-                    <h2>LET THE NONSENSE BEGIN!</h2>
-                    {this.props.gameinProgress ? <span className="themeWord">{this.props.themeWord}</span> : null}
+
+                    {this.props.gameinProgress ?
+                        <div className="themeWord-title">
+                            <h4>Your theme word is:</h4>
+                            {this.props.themeWord}
+                            {
+                                this.props.yourTurn ?
+                                    <div>
+                                        <h4 className="indicator">Your Turn!</h4>
+
+                                        <div className="btn-holder" onClick={this.pass} style={{ display: this.props.match.params.gameType === "story" ? "none" : "block" }}>
+                                            <div className="button">
+                                                <p className="btnText">PASS</p>
+                                                <div className="btnTwo">
+                                                    <p className="btnText2">
+                                                        <div className="pass-img"></div>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* <button   className="pass start-fin-btn">Pass</button> */}
+                                        {/* <div className="timer">{this.props.timer}</div> */}
+                                    </div> :
+                                    null
+                            }
+                        </div> :
+
+                        <h2 className="themeWord-title">LET THE NONSENSE BEGIN!</h2>
+                    }
+
                     <div style={{ display: (this.props.currentPlayers[0] === this.props.currentUser.userName) ? "block" : "none" }} classNane="start-finish">
+                        <div className="players">
+                            <h4>PLAYERS:</h4>
+
+                            {this.props.currentPlayers.map(p => { return <span key={p}>{p}</span> })}
+
+                        </div>
                         {
                             this.props.gameinProgress ?
-                                <span>
-                                    <button onClick={this.finish} className="finish start-fin-btn">FINISH</button>
-                                </span> :
-                                <span>
-                                    <button onClick={this.invite} className="invite start-fin-btn" >Invite</button>
-                                    <button onClick={this.start} className="start start-fin-btn" >Start</button>
-                                </span>
+                                <div className="game-btns">
+                                    <div className="btn-holder" onClick={this.finish}>
+                                        <div className="button cancle">
+                                            <p className="btnText">FINISH</p>
+                                            <div className="btnTwo cancle2">
+                                                <p className="btnText2">
+                                                    <div className="finish-img"></div>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* <button onClick={this.finish} className="finish start-fin-btn">FINISH</button> */}
+                                </div> :
+                                <div className="game-btns">
+                                    <div className="btn-holder" onClick={this.invite}>
+                                        <div className="button">
+                                            <p className="btnText">INVITE</p>
+                                            <div className="btnTwo">
+                                                <p className="btnText2">
+                                                    <div className="invite-img"></div>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* <button onClick={this.invite} className="invite start-fin-btn" >Invite</button> */}
+                                    
+                                    <div className="btn-holder" onClick={this.start}>
+                                        <div className="button accept">
+                                            <p className="btnText">START</p>
+                                            <div className="btnTwo accept2">
+                                                <p className="btnText2">
+                                                    <div className="start-img"></div>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* <button onClick={this.start} className="start start-fin-btn" >Start</button> */}
+                                </div>
                         }
                     </div>
-                    {
-                        this.props.yourTurn ?
-                            <span>
-                                <button style={{ display: this.props.match.params.gameType==="story" ? "none" : "block" }} onClick={this.pass} className="pass start-fin-btn">Pass</button>
-                                <h4 className="indicator">Your Turn!</h4>
-                                {/* <span className="timer">{this.props.timer}</span> */}
-                            </span> :
-                            null
-                    }
-                    <div className="players">
-                        <h4>PLAYERS:</h4>
-                        <ul>
-                            {this.props.currentPlayers.map(p => { return <li key={p}>{p}</li> })}
-                        </ul>
-                    </div>
+
                 </div>
                 <div className="game-board">
                     {this.renderGameBoard(this.props.match.params.gameType)}

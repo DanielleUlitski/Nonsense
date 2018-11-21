@@ -14,7 +14,15 @@ class HistoryLink extends Component {
         canvas.height = 1024;
         canvas.style.width = "200px";
         canvas.style.height = "200px";
-        this.renderDrawing()
+        switch (this.props.gameType) {
+            case "drawing":
+                this.renderDrawing();
+                break;
+            case "story":
+                this.renderStory()
+                break;
+            default: return null;
+        }
     }
 
     renderDrawing = () => {
@@ -39,29 +47,52 @@ class HistoryLink extends Component {
         ctx.stroke();
     }
 
+    yPosition = 50;
+    xPosition = 10;
+    
+    renderStory = () => {
+        for (let i in this.props.story.text) {
+            this.write(this.props.story.text[i], i)
+            this.xPosition += 8;
+        }
+    }
+
+    write = (letter, index) => {
+        const ctx = this.refs.historyCanvas.getContext('2d');
+        if (index === 0) {
+            ctx.font = "30px floralCapitals";
+        } else {
+            ctx.font = "30px crawley"
+        }
+        if (letter === '.' || letter === ',') {
+            ctx.fillText(letter, this.xPosition, this.yPosition);
+            this.yPosition += 40;
+            this.xPosition = 10;
+        } else {
+            ctx.fillText(letter, this.xPosition, this.yPosition);
+        }
+    }
+
     displayPopup = () => {
-        this.props.displayPopup(this.props.drawing)
+        switch (this.props.gameType) {
+            case "drawing":
+                this.props.displayPopup(this.props.drawing, this.props.gameType)
+                break;
+            case "story":
+                this.props.displayPopup(this.props.story, this.props.gameType)
+                break;
+            default: return null;
+        }
     }
 
     render() {
-        if (this.props.drawing) {
-            return (
-                <div className="HistoryLink">
-                    <button onClick={this.displayPopup}>
-                        <canvas className="drawing-field" ref="historyCanvas" />
-                    </button>
-                </div>
-            )
-        }
-        else if (this.props.story) {
-            return (
-                <div className="HistoryLink">
-                    <button>
-                        <canvas className="drawing-field" ref="historyCanvas" />
-                    </button>
-                </div>
-            )
-        }
+        return (
+            <div className="HistoryLink">
+                <button onClick={this.displayPopup}>
+                    <canvas className="drawing-field" ref="historyCanvas" />
+                </button>
+            </div>
+        )
     }
 }
 

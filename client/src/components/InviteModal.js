@@ -3,7 +3,7 @@ import { observable, action } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom'
 import '../styles/popup.css';
-import GameScreen from './GameScreen';
+import '../styles/getInvite.css';
 
 @inject(allStores => ({
     socket: allStores.usersStore.socket,
@@ -60,9 +60,32 @@ class InviteModal extends Component {
         return (
             <div style={{ visibility: this.pending ? "visible" : "hidden" }} className="popup">
                 <div className="modal-content">
-                    <span>{this.invite.userName} Has invited you!</span>
-                    <Link to={'/game/' + this.props.gameType} ><button onClick={this.accept}>Accept</button></Link>
-                    <button onClick={this.decline}>Decline</button>
+                    <h5>{this.invite.userName} Has invited you!</h5>
+
+                    <div className="btn-holder btn-holder-invite" onClick={this.accept}>
+                        <Link to={'/game/' + this.props.gameType} >
+                            <div className="button accept">
+                                <p className="btnText">ACCEPT</p>
+                                <div className="btnTwo accept2">
+                                    <p className="btnText2">
+                                        <div className="accept-img"></div>
+                                    </p>
+                                </div>
+                            </div>
+                        </Link>
+                    </div>
+
+                    <div className="btn-holder btn-holder-invite" onClick={this.decline}>
+                        <div className="button cancle">
+                            <p className="btnText">DECLINE</p>
+                            <div className="btnTwo cancle2">
+                                <p className="btnText2">
+                                    <div className="cancle-img"></div>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         )

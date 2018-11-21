@@ -1,24 +1,30 @@
 @font-face {
     font-family: appFont;
-    src: url('./styles/risestarhand.semibold.ttf');
+    src: url('./styles/fonts/risestarhand.semibold.ttf');
 }
 
 @font-face {
     font-family: floralCapitals;
-    src: url('./styles/floral-capitals.regular.ttf');
+    src: url('./styles/fonts/floral-capitals.regular.ttf');
 }
 
 @font-face {
     font-family: crawley;
-    src: url('./styles/crawley.regular.ttf');
+    src: url('./styles/fonts/crawley.regular.ttf');
 }
 
 body{
     background-image: -webkit-linear-gradient(left, rgb(44, 41, 61) , rgb(83, 97, 109) );
     font-family: appFont;
-    color: rgb(133, 231, 24);
+    color: #26A69A;
     font-size: 1.4em;
     height: 100vh;
+}
+
+input {
+    border-radius: 7px;
+    background-color: aliceblue;
+    padding: 7px;
 }
 
 .navbar-btn {
@@ -27,8 +33,22 @@ body{
     margin-right: 13px;
 }
 
-.logout:hover {
+.navbar-btn:hover{
     cursor: pointer;
+}
+
+.history{
+    float: right;
+    clear: none;
+    color: white;
+    margin-left: 13px;
+}
+
+.logout {
+    float: right;
+    clear: none;
+    color: white;
+    margin-left: 13px;
 }
 
 #navbar li a {
@@ -40,7 +60,7 @@ body{
     background-color: black;
     margin-top: 0px;
     margin-bottom: 0px;
-    height: 25px;
+    height: 5vh;
     list-style: none;
 }
 
@@ -51,18 +71,12 @@ body{
 
 .game-title {
     font-size: 1.2em;
-    padding-left: 26%;
 }
 
-.game-link {
+.navbar-text {
     float: left;
     clear: none;
-}
-
-.user-display {
-    float: right;
-    clear: none;
-    color: white;
+    margin-right: 13px;
 }
 
 .drawing-field {
@@ -70,7 +84,7 @@ body{
 }
 
 .color {
-    width: 50px;
+    width: 10%;
     height: 50px;
     float: left;
     clear: none;

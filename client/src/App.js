@@ -19,15 +19,16 @@ class App extends Component {
       <Router>
         <div className="App">
           <ul id="navbar">
+            <li className="navbar-text">NONSENSE</li>
             <li className="navbar-btn">
               <Link to="/">HOME</Link>
             </li>
-            <li className="navbar-btn">
-              <Link to="/history">HISTORY</Link>
+            <li className="navbar-text">
+              {this.props.currentUser ? "Welcome " + this.props.currentUser.userName : null}
             </li>
             <li className="navbar-btn logout" onClick={this.props.logOut}><Link to="/">Log out</Link></li>
-            <li className="user-display">
-              {this.props.currentUser ? this.props.currentUser.userName : null}
+            <li className="navbar-btn history">
+              <Link to="/history">HISTORY</Link>
             </li>
             <InviteModal />
           </ul>

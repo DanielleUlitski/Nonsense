@@ -1,0 +1,9 @@
+.home-img {
+    background-image:url("./icons/home-icon.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+}

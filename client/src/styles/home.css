@@ -1,0 +1,59 @@
+.home{
+    position: relative;
+    display: grid;
+    height: 95vh;
+    grid-template-columns: 10% 40% 40% 10%; 
+    grid-template-rows: 1fr 6fr; 
+
+    grid-template-areas:
+    " . t t . "
+    " . d s . ";
+    grid-gap: 20px;
+    text-align: center;
+}
+
+.title{
+    grid-area: t
+}
+
+#drawing {
+    grid-area: d
+}
+
+#story {
+    grid-area: s
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
+
+.game-link{
+    position: relative;
+}
+
+.play-img {
+    background-image:url("./icons/play-icon.png");
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+}
+
+.play{
+    background-color: rgba(94, 224, 7, 0.61);
+}

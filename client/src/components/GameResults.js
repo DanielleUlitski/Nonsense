@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import '../styles/popup.css';
+import '../styles/canvasPopup.css';
+import '../styles/btn.css';
+import '../styles/gameResults.css';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { observable } from 'mobx';
@@ -24,8 +27,7 @@ class GameResults extends Component {
             this.resultCanvas = this.refs.resultCanvas
             this.resultCanvas.width = 1024;
             this.resultCanvas.height = 1024;
-            this.resultCanvas.style.width = "712px";
-            this.resultCanvas.style.height = "712px";
+
             switch (this.props.gameType) {
                 case "drawing":
                     this.renderDrawing();
@@ -33,6 +35,7 @@ class GameResults extends Component {
                 case "story":
                     this.renderStory()
                     break;
+                default: return null;
             }
         }
     }
@@ -59,6 +62,14 @@ class GameResults extends Component {
         ctx.stroke();
     }
 
+    renderStory = () => {
+        if (this.i < this.props.finalProduct.length - 1) { requestAnimationFrame(this.renderStory) }
+        console.log(this.props.finalProduct[this.i]);
+        this.write(this.props.finalProduct[this.i])
+        this.xPosition += 8;
+        this.i++
+    }
+
     write = (letter) => {
         const ctx = this.resultCanvas.getContext('2d');
         if (this.i === 0) {
@@ -73,14 +84,6 @@ class GameResults extends Component {
         } else {
             ctx.fillText(letter, this.xPosition, this.yPosition);
         }
-    }
-
-    renderStory = () => {
-        if (this.i < this.props.finalProduct.length - 1) { requestAnimationFrame(this.renderStory) }
-        console.log(this.props.finalProduct[this.i]);
-        this.write(this.props.finalProduct[this.i])
-        this.xPosition += 8;
-        this.i++
     }
 
     finalize = () => {
@@ -101,11 +104,24 @@ class GameResults extends Component {
     render() {
         return (
             <div className="popup">
-                <Link to="/"><span onClick={this.finalize}>Home</span></Link>
-                <canvas className="drawing-field" ref="resultCanvas" />
-            </div>
-        )
-    }
-}
+                <div className="modal-content canvas-modal">
+                    <canvas className="drawing-field" id="popup-canvas" ref="resultCanvas" />
 
+                    <div className="btn-holder" onClick={this.finalize}>
+                        <Link to="/">
+                            <div className="button">
+                                <p className="btnText">HOME</p>
+                                <div className="btnTwo">
+                                    <p className="btnText2"> <div className="home-img"></div></p>
+                                </div>
+                            </div>
+                        </Link>
+                    </div>
+
+                    </div>
+                </div >
+                )
+            }
+        }
+        
 export default GameResults;

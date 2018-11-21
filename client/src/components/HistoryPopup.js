@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/popup.css';
+import '../styles/canvasPopup.css';
 import { observer, inject } from 'mobx-react';
 import { observable } from 'mobx';
 
@@ -17,14 +18,20 @@ class GameResults extends Component {
     @observable canvas = undefined;
 
     componentDidMount() {
-        console.log(this.refs);
         this.canvas = this.refs.historyCanvas
         this.canvas.width = 1024;
         this.canvas.height = 1024;
-        this.canvas.style.width = "712px";
-        this.canvas.style.height = "712px";
+
         if (this.props.itemToDisplay) {
-            this.renderDrawing();
+            switch (this.props.gameType) {
+                case "drawing":
+                    this.renderDrawing();
+                    break;
+                case "story":
+                    this.renderStory()
+                    break;
+                default: return null;
+            }
         }
     }
 
@@ -52,17 +59,30 @@ class GameResults extends Component {
         ctx.stroke();
     }
 
-    renderStory = () => {
+    yPosition = 50;
+    xPosition = 10;
 
+    renderStory = () => {
+        if (this.props.itemToDisplay.text[0] === undefined) { return }
+        if (this.i < this.props.itemToDisplay.text.length - 1) { requestAnimationFrame(this.renderStory) }
+        this.write(this.props.itemToDisplay.text[this.i])
+        this.xPosition += 8;
+        this.i++
     }
 
-    renderingType = () => {
-        switch (this.props.gameType) {
-            case "drawing": return null
-            case "story":
-                return <div className="story-field">{this.renderStory}</div>
-            default:
-                return null
+    write = (letter) => {
+        const ctx = this.canvas.getContext('2d');
+        if (this.i === 0) {
+            ctx.font = "30px floralCapitals";
+        } else {
+            ctx.font = "30px crawley"
+        }
+        if (letter === '.' || letter === ',') {
+            ctx.fillText(letter, this.xPosition, this.yPosition);
+            this.yPosition += 40;
+            this.xPosition = 10;
+        } else {
+            ctx.fillText(letter, this.xPosition, this.yPosition);
         }
     }
 
@@ -73,10 +93,19 @@ class GameResults extends Component {
     render() {
         return (
             <div className="popup">
-                {this.renderingType()}
+                <div className="modal-content canvas-modal">
+                    <canvas className="drawing-field" id="popup-canvas" ref="historyCanvas" />
+                    {/* <button onClick={this.displayPopup}>close</button> */}
 
-                <canvas className="drawing-field" ref="historyCanvas" />
-                <button onClick={this.displayPopup}>close</button>
+                    <div className="btn-holder" onClick={this.displayPopup}>
+                            <div className="button cancle">
+                                <p className="btnText">CLOSE</p>
+                                <div className="btnTwo cancle2">
+                                    <p className="btnText2"> <div className="cancle-img"></div></p>
+                                </div>
+                            </div>
+                    </div>
+                </div>
             </div>
         )
     }

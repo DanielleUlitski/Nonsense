@@ -71,7 +71,6 @@ class UsersStore {
     }
 
     @action getPlayers = (arr) => {
-        console.log(arr);
         this.currentPlayers = arr;
     }
 
@@ -106,6 +105,7 @@ class UsersStore {
             case "story":
                 this.newStory();
                 break;
+            default: return null;
         }
     }
 

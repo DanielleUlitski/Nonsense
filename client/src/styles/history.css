@@ -1,0 +1,14 @@
+.History{
+    text-align: center;
+}
+
+.history-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 2.5%;
+}
+
+.HistoryLink {    
+    margin-top: 10px;
+}
