@@ -116,7 +116,7 @@ class GameScreen extends Component {
                         <div className="players">
                             <h4>PLAYERS:</h4>
 
-                            {this.props.currentPlayers.map(p => { return <span key={p}>{p}</span> })}
+                            {this.props.currentPlayers.map(p => { return <p key={p}>{p}</p> })}
 
                         </div>
                         {
