@@ -77,7 +77,7 @@ class StoryScreen extends Component {
             ctx.font = "10pt appFont";
             ctx.fillText(" " + this.sentenceInp, 35, this.yPositions);
             this.yPositions += 30;
-            
+
             this.props.socket.emit('updateStory', (this.previosKey + " " + this.sentenceInp), this.keyInp);
             this.props.pass();
             this.sentenceInp = "";
@@ -93,9 +93,10 @@ class StoryScreen extends Component {
                 <div style={{ display: this.props.gameinProgress ? "block" : "none" }}>
                     <canvas ref="canvas" className="crawley-font" />
                     <div className="text-area">
-                        <input className="sentence" value={this.sentenceInp} onChange={this.handleInpt} name="sentenceInp" placeholder="write you sentence" /><br/>
-                        <input className="keyword" value={this.keyInp} onChange={this.handleInpt} name="keyInp" placeholder="write the key word for the next player" />
-                        
+                        <div style={{ display: "inline-block", width: "80%" }}>
+                            <input className="sentence" value={this.sentenceInp} onChange={this.handleInpt} name="sentenceInp" placeholder="write you sentence" /><br />
+                            <input className="keyword" value={this.keyInp} onChange={this.handleInpt} name="keyInp" placeholder="write the key word for the next player" />
+                        </div>
                         <div className="btn-holder btn-holder-send" onClick={this.send}>
                             <div className="button button-send">
                                 <p className="btnText">send</p>
