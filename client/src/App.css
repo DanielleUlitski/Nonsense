@@ -16,9 +16,15 @@
 body{
     background-image: -webkit-linear-gradient(left, rgb(44, 41, 61) , rgb(83, 97, 109) );
     font-family: appFont;
-    color: rgb(133, 231, 24);
+    color: #26A69A;
     font-size: 1.4em;
     height: 100vh;
+}
+
+input {
+    border-radius: 7px;
+    background-color: aliceblue;
+    padding: 7px;
 }
 
 .navbar-btn {
@@ -51,12 +57,6 @@ body{
 
 .game-title {
     font-size: 1.2em;
-    padding-left: 26%;
-}
-
-.game-link {
-    float: left;
-    clear: none;
 }
 
 .user-display {

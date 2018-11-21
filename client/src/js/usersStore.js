@@ -71,7 +71,6 @@ class UsersStore {
     }
 
     @action getPlayers = (arr) => {
-        console.log(arr);
         this.currentPlayers = arr;
     }
 

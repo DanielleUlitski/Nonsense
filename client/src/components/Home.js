@@ -25,20 +25,22 @@ class Home extends Component {
 
         this.props.socket.on('themeWord', (word) => {
             this.props.saveTheme(word)
-            console.log(word);
         })
     }
 
     render() {
         return (
             <div className="home">
-                <h2 className="home-title">Nonsense</h2>
-                <p className="description">
-                    This is an app with all the nonsense you need,
-                </p>
-                <GameLink src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQDbEdqKqmQOuY5bTmcVA-sEOHsWFqM_asYBIYEcypabLO5QIo0g" link="/game/drawing" gameType="drawing" />
-                <GameLink src="http://www.thestory.org/sites/default/themes/siteskin/inc/images/podcast-600.png" link="/game/story" gameType="story" />
+                <div className="title">
+                    <h2 className="home-title">Nonsense</h2>
+                    <p className="description">
+                        This is an app with all the nonsense you need,
+                    </p>
+                </div>
+                    <GameLink src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQDbEdqKqmQOuY5bTmcVA-sEOHsWFqM_asYBIYEcypabLO5QIo0g" link="/game/drawing" gameType="drawing" />
+                    <GameLink src="http://www.thestory.org/sites/default/themes/siteskin/inc/images/podcast-600.png" link="/game/story" gameType="story" />
             </div>
+
         )
     }
 }

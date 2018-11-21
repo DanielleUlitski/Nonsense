@@ -1,0 +1,61 @@
+#login-popup {
+    background-image: -webkit-linear-gradient(left, rgb(44, 41, 61) , rgb(83, 97, 109) );
+    
+}
+
+#login-content{
+    margin: 4% auto;
+    height: 78%;
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    grid-template-rows: 10% 80% 10%;
+    grid-template-areas:
+    " t t "
+    " li su "
+    " e e ";
+    text-align: center;
+}
+
+#login{
+    grid-area: li;
+}
+
+#singup {
+    grid-area: su;
+}
+
+#error{
+    grid-area: e;
+    background-color: rgba(110, 11, 11, 0.616);
+    border-radius: 15px;
+    border: 5px solid rgb(110, 11, 11);
+    width: 60%;
+    margin-left: 20%;
+    height: 30px;
+    padding: 7px;
+}
+
+.welcome {
+    grid-area: t;
+    margin: 15px;
+}
+
+.sing-img {
+    background-image:url("./icons/singin-icon.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+}
+
+.login-img {
+    background-image:url("./icons/login-icon.png");
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+}

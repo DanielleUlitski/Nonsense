@@ -26,11 +26,11 @@ class HistoryStore {
         this.gameType = type;
     }
 
-    @action displayPopup = (itemToDisplay) => {
+    @action displayPopup = (itemToDisplay, gameType) => {
         this.itemToDisplay = itemToDisplay;
         
         if (!this.gameType) {
-            this.gameType = "drawing"
+            this.gameType = gameType
         }
         else {
             this.gameType = null;

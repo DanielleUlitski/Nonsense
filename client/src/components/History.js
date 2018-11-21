@@ -15,9 +15,9 @@ class History extends Component {
         return (
             <div className="History">
                 <h4>MY DRAWINGS:</h4>
-                {this.props.drawings.map(d => { return <HistoryLink key={d._id} drawing={d}  /> })}
-                {/* <h4>MY STORIES:</h4>
-                    {this.props.stories.map(s=>{return <HistoryLink key={s._id} story={s} /> } )} */}
+                {this.props.drawings.map(d => { return <HistoryLink key={d._id} drawing={d} gameType="drawing" /> })}
+                <h4>MY STORIES:</h4>
+                    {this.props.stories.map(s=>{return <HistoryLink key={s._id} story={s} gameType="story" /> } )}
                 {this.props.itemToDisplay ? <HistoryPopup /> : null}
             </div>
         )
