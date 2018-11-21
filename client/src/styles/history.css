@@ -5,7 +5,6 @@
 .history-items {
     display: flex;
     flex-wrap: wrap;
-    /* align-items: stretch; */
     justify-content: space-between;
     margin: 2.5%;
 }

@@ -1,4 +1,5 @@
 #popup-canvas {
+    margin: 0px;
     width: 100%;
     height: 90%;
 }
@@ -6,5 +7,5 @@
 .canvas-modal{
     margin: 1% auto;
     width: 60%;
-    height: 90%;
+    height: 86%;
 }

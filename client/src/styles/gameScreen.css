@@ -14,7 +14,30 @@
 .game-info{
     grid-area: gi;
     text-align: center;
-    
+
+    display: grid;
+    grid-template-columns: 1fr; 
+    grid-template-rows:  1fr 1fr 1fr; 
+
+    grid-template-areas:
+    " t "
+    " p "
+    " b ";
+
+    grid-gap: 10px;
+}
+
+.themeWord-title{
+    grid-area: t;
+}
+
+.players{
+    grid-area: p;
+}
+
+.game-btns{
+    grid-area: b;
+    margin-top: 45%;
 }
 
 .game-board {
@@ -30,4 +53,44 @@
 
 .start-fin-btn:active {
     background-color: #65C138;
+}
+
+.pass-img {
+    background-image:url("./icons/pass-icon.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+}
+
+.invite-img {
+    background-image:url("./icons/singin-icon.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+}
+
+.start-img {
+    background-image:url("./icons/play-icon.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+}
+
+.finish-img {
+    background-image:url("./icons/stop-icon.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
 }

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import '../styles/popup.css';
 import '../styles/canvasPopup.css';
+import '../styles/btn.css';
+import '../styles/gameResults.css';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { observable } from 'mobx';
@@ -104,11 +106,22 @@ class GameResults extends Component {
             <div className="popup">
                 <div className="modal-content canvas-modal">
                     <canvas className="drawing-field" id="popup-canvas" ref="resultCanvas" />
-                    <Link to="/"><span onClick={this.finalize}>Home</span></Link>
-                </div>
-            </div>
-        )
-    }
-}
 
+                    <div className="btn-holder" onClick={this.finalize}>
+                        <Link to="/">
+                            <div className="button">
+                                <p className="btnText">HOME</p>
+                                <div className="btnTwo">
+                                    <p className="btnText2"> <div className="home-img"></div></p>
+                                </div>
+                            </div>
+                        </Link>
+                    </div>
+
+                    </div>
+                </div >
+                )
+            }
+        }
+        
 export default GameResults;

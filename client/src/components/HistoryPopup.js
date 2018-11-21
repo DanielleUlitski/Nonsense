@@ -95,7 +95,16 @@ class GameResults extends Component {
             <div className="popup">
                 <div className="modal-content canvas-modal">
                     <canvas className="drawing-field" id="popup-canvas" ref="historyCanvas" />
-                    <button onClick={this.displayPopup}>close</button>
+                    {/* <button onClick={this.displayPopup}>close</button> */}
+
+                    <div className="btn-holder" onClick={this.displayPopup}>
+                            <div className="button cancle">
+                                <p className="btnText">CLOSE</p>
+                                <div className="btnTwo cancle2">
+                                    <p className="btnText2"> <div className="cancle-img"></div></p>
+                                </div>
+                            </div>
+                    </div>
                 </div>
             </div>
         )
