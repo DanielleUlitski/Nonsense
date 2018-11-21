@@ -1,15 +1,14 @@
 .game-screen {
     height: 95vh;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr; 
+    grid-template-columns: 1fr 1fr 1fr; 
     grid-template-rows:  1fr 1fr; 
 
     grid-template-areas:
-    " gi gb gb cp "
-    " gi gb gb cp ";
+    " gi gb gb "
+    " gi gb gb ";
     grid-gap: 10px
 }
-
 
 .game-info{
     grid-area: gi;

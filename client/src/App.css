@@ -14,9 +14,9 @@
 }
 
 body{
-    background-image: -webkit-linear-gradient(left, rgb(44, 41, 61) , rgb(83, 97, 109) );
+    background-image: -webkit-linear-gradient(left, rgb(255, 41, 41) , rgb(255, 123, 0) );
     font-family: appFont;
-    color: #26A69A;
+    color: rgb(26, 83, 255);
     font-size: 1.4em;
     height: 100vh;
 }
@@ -57,7 +57,7 @@ input {
 }
 
 #navbar {
-    background-color: black;
+    background-color: rgb(141, 3, 38);
     margin-top: 0px;
     margin-bottom: 0px;
     height: 5vh;
