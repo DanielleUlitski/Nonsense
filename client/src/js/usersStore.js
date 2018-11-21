@@ -13,7 +13,7 @@ class UsersStore {
 
     @observable yourTurn = false;
 
-    @observable timer = undefined;
+    @observable timeOut = undefined;
 
     @observable finalProduct = undefined;
 
@@ -26,6 +26,8 @@ class UsersStore {
     @observable gameinProgress = false;
 
     @observable gameType = undefined;
+
+    @observable timer = 15;
 
     @action startGame = () => {
         this.gameinProgress = true;
@@ -53,10 +55,21 @@ class UsersStore {
         });
     }
 
-    @action startTurn = (str) => {
+    @action countDown = () => {
+        if (this.timer === 0) {
+            this.pass();
+        }
+        else {
+            this.timeOut = setTimeout(this.countDown, 1000);
+            this.timer--;
+        }
+    }
+
+    @action startTurn = (gameType) => {
         this.yourTurn = true;
-        if(str === "drawing"){
-            this.timer = setTimeout(this.pass, 15000);
+        if (gameType === "drawing") {
+            this.timer = 15;
+            this.countDown();
         }
     }
 
@@ -65,7 +78,7 @@ class UsersStore {
     }
 
     @action pass = () => {
-        clearTimeout(this.timer);
+        clearTimeout(this.timeOut);
         this.socket.emit('pass');
         this.yourTurn = false;
     }
@@ -123,7 +136,7 @@ class UsersStore {
 
     @action start = () => {
         this.socket.emit('start');
-        this.startTurn();
+
     }
 
     finish = (gameType) => {
@@ -131,7 +144,7 @@ class UsersStore {
     }
 
     stopTimer = () => {
-        clearTimeout(this.timer);
+        clearTimeout(this.timeOut);
     }
 
     invite = (userName) => {
@@ -152,7 +165,7 @@ class UsersStore {
     }
 
     @action logOut = () => {
-        clearTimeout(this.timer);
+        clearTimeout(this.timeOut);
         this.currentPlayers = [];
         this.currentUser = null;
         this.socket.emit('logOut');

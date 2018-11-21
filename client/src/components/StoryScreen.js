@@ -57,9 +57,8 @@ class StoryScreen extends Component {
 
     showKey = (key) => {
         let ctx = this.canvas.getContext("2d")
-        ctx.font = "1.2em crawley";
+        ctx.font = "10pt appFont";
         ctx.fillText(key, 10, this.yPositions);
-        this.yPositions += 40;
         this.previosKey = key;
     }
 
@@ -75,9 +74,9 @@ class StoryScreen extends Component {
             }, 2000);
         } else {
             let ctx = this.canvas.getContext("2d")
-            ctx.font = "1.2em crawley";
-            ctx.fillText(this.previosKey + " " + this.sentenceInp, 10, this.yPositions);
-            this.yPositions += 40;
+            ctx.font = "10pt appFont";
+            ctx.fillText(" " + this.sentenceInp, 35, this.yPositions);
+            this.yPositions += 30;
             
             this.props.socket.emit('updateStory', (this.previosKey + " " + this.sentenceInp), this.keyInp);
             this.props.pass();

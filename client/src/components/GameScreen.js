@@ -90,7 +90,7 @@ class GameScreen extends Component {
                                 this.props.yourTurn ?
                                     <div>
                                         <h4 className="indicator">Your Turn!</h4>
-
+                                        <span>{(this.props.match.params.gameType === "drawing") ? this.props.timer : null}</span>
                                         <div className="btn-holder" onClick={this.pass} style={{ display: this.props.match.params.gameType === "story" ? "none" : "block" }}>
                                             <div className="button">
                                                 <p className="btnText">PASS</p>
@@ -102,8 +102,6 @@ class GameScreen extends Component {
                                             </div>
                                         </div>
 
-                                        {/* <button   className="pass start-fin-btn">Pass</button> */}
-                                        {/* <div className="timer">{this.props.timer}</div> */}
                                     </div> :
                                     null
                             }
@@ -116,7 +114,12 @@ class GameScreen extends Component {
                         <div className="players">
                             <h4>PLAYERS:</h4>
 
-                            {this.props.currentPlayers.map(p => { return <p key={p}>{p}</p> })}
+                            {this.props.currentPlayers.map(p => {
+                                if (p === this.props.currentUser.userName) {
+                                    return <p key={p}>{p} (Me)</p>
+                                }
+                                return <p key={p}>{p}</p>
+                            })}
 
                         </div>
                         {
@@ -146,7 +149,7 @@ class GameScreen extends Component {
                                         </div>
                                     </div>
                                     {/* <button onClick={this.invite} className="invite start-fin-btn" >Invite</button> */}
-                                    
+
                                     <div className="btn-holder" onClick={this.start}>
                                         <div className="button accept">
                                             <p className="btnText">START</p>
