@@ -59,6 +59,14 @@ class GameResults extends Component {
         ctx.stroke();
     }
 
+    renderStory = () => {
+        if (this.i < this.props.finalProduct.length - 1) { requestAnimationFrame(this.renderStory) }
+        console.log(this.props.finalProduct[this.i]);
+        this.write(this.props.finalProduct[this.i])
+        this.xPosition += 8;
+        this.i++
+    }
+
     write = (letter) => {
         const ctx = this.resultCanvas.getContext('2d');
         if (this.i === 0) {
@@ -73,14 +81,6 @@ class GameResults extends Component {
         } else {
             ctx.fillText(letter, this.xPosition, this.yPosition);
         }
-    }
-
-    renderStory = () => {
-        if (this.i < this.props.finalProduct.length - 1) { requestAnimationFrame(this.renderStory) }
-        console.log(this.props.finalProduct[this.i]);
-        this.write(this.props.finalProduct[this.i])
-        this.xPosition += 8;
-        this.i++
     }
 
     finalize = () => {

@@ -25,7 +25,6 @@ class Home extends Component {
 
         this.props.socket.on('themeWord', (word) => {
             this.props.saveTheme(word)
-            console.log(word);
         })
     }
 
