@@ -110,18 +110,19 @@ class GameScreen extends Component {
                         <h2 className="themeWord-title">LET THE NONSENSE BEGIN!</h2>
                     }
 
+                    <div className="players">
+                        <h4>PLAYERS:</h4>
+
+                        {this.props.currentPlayers.map(p => {
+                            if (p === this.props.currentUser.userName) {
+                                return <p key={p}>{p} (Me)</p>
+                            }
+                            return <p key={p}>{p}</p>
+                        })}
+
+                    </div>
+
                     <div style={{ display: (this.props.currentPlayers[0] === this.props.currentUser.userName) ? "block" : "none" }} classNane="start-finish">
-                        <div className="players">
-                            <h4>PLAYERS:</h4>
-
-                            {this.props.currentPlayers.map(p => {
-                                if (p === this.props.currentUser.userName) {
-                                    return <p key={p}>{p} (Me)</p>
-                                }
-                                return <p key={p}>{p}</p>
-                            })}
-
-                        </div>
                         {
                             this.props.gameinProgress ?
                                 <div className="game-btns">
