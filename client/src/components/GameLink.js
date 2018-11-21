@@ -19,7 +19,7 @@ class GameLink extends Component {
                 <span className="game-title">{this.props.gameType}</span> <br />
                 <img className="image-link" src={this.props.src} />
                 <p className="description">
-                    {this.props.gameType === "drawing" ? "In this game you will draw a shared drawing with your freinds." : "In this game you can write a continud story with all of you freinds"}
+                    {this.props.gameType === "drawing" ? "In this game you will draw a shared drawing with your freinds." : "In this game you can write a continued story with all of you freinds"}
                 </p>
                 <div className="btn-holder">
                     <Link onClick={this.newRoom} to={this.props.link}>

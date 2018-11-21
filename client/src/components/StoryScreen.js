@@ -36,8 +36,6 @@ class StoryScreen extends Component {
         this.canvas = this.refs.canvas
         this.canvas.width = 1024;
         this.canvas.height = 1024;
-        this.canvas.style.width = "712px";
-        this.canvas.style.height = "712px";
 
         this.props.socket.on('nextTurn', (key) => {
             this.props.startTurn('story')

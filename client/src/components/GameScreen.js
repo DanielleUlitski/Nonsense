@@ -69,12 +69,7 @@ class GameScreen extends Component {
     renderGameBoard = (gameType) => {
         switch (gameType) {
             case "drawing":
-                return (
-                    <span>
-                        <GameCanvas setGameState={this.setGameState} gameinProgress={this.props.gameinProgress} />
-                        <ColorPallete />
-                    </span>
-                )
+                return <GameCanvas setGameState={this.setGameState} gameinProgress={this.props.gameinProgress} />
             case "story":
                 return <StoryScreen setGameState={this.setGameState} gameinProgress={this.props.gameinProgress} />
             default:

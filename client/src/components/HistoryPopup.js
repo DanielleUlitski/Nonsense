@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/popup.css';
+import '../styles/canvasPopup.css';
 import { observer, inject } from 'mobx-react';
 import { observable } from 'mobx';
 
@@ -20,8 +21,7 @@ class GameResults extends Component {
         this.canvas = this.refs.historyCanvas
         this.canvas.width = 1024;
         this.canvas.height = 1024;
-        this.canvas.style.width = "712px";
-        this.canvas.style.height = "712px";
+
         if (this.props.itemToDisplay) {
             switch (this.props.gameType) {
                 case "drawing":
@@ -92,8 +92,10 @@ class GameResults extends Component {
     render() {
         return (
             <div className="popup">
-                <canvas className="drawing-field" ref="historyCanvas" />
-                <button onClick={this.displayPopup}>close</button>
+                <div className="modal-content canvas-modal">
+                    <canvas className="drawing-field" id="popup-canvas" ref="historyCanvas" />
+                    <button onClick={this.displayPopup}>close</button>
+                </div>
             </div>
         )
     }
