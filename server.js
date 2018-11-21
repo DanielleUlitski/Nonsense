@@ -257,19 +257,8 @@ io.sockets.on('connection', (socket) => {
       default: console.error('missing gameType');
     }
   })
+})
 
-  // socket.on('finalize', () => {
-  //   socket.leave(socket.room);
-  //   if (rooms[socket.room]) {
-  //     rooms[socket.room].splice(rooms[socket.room].indexOf(socket.user.userName), 1);
-  //   }
-  //   if (!rooms[socket.room].length) {
-  //     // rooms.splice(rooms.indexOf(socket.room), 1);
-  //     delete rooms[socket.room]
-  //   }
-  //   socket.room = 'Lobby';
-  //   socket.join('Lobby');
-  //   rooms['Lobby'].push(socket.user.userName);
-  //   console.log(rooms);
-  // })
+app.get("*" , function(req,res){
+  res.sendFile("/client/build/index.html"); 
 })
