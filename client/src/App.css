@@ -16,8 +16,8 @@
 body{
     background-image: -webkit-linear-gradient(left, rgb(255, 41, 41) , rgb(255, 123, 0) );
     font-family: appFont;
-    color: rgb(26, 83, 255);
-    font-size: 1.4em;
+    color: rgb(102, 0, 102);
+    font-size: 1.6em;
     height: 100vh;
 }
 
