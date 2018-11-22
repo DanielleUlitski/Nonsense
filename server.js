@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const io = require('socket.io').listen(server)
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.PROD ||'mongodb://nonsensus:zyaHJa4YzsZPDQ5@ds127961.mlab.com:27961/nonsense')
+mongoose.connect(process.env.PROD)
 
 const usersAPI = require('./routes/usersAPI')
 const storyAPI = require('./routes/storyAPI')
