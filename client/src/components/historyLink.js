@@ -49,7 +49,7 @@ class HistoryLink extends Component {
 
     yPosition = 50;
     xPosition = 10;
-    
+
     renderStory = () => {
         for (let i in this.props.story.text) {
             this.write(this.props.story.text[i], i)
@@ -88,9 +88,7 @@ class HistoryLink extends Component {
     render() {
         return (
             <div className="HistoryLink">
-                <button onClick={this.displayPopup}>
-                    <canvas className="drawing-field" ref="historyCanvas" />
-                </button>
+                <canvas onClick={this.displayPopup} className="drawing-field" ref="historyCanvas" />
             </div>
         )
     }
