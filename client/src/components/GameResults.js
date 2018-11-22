@@ -66,20 +66,20 @@ class GameResults extends Component {
         if (this.i < this.props.finalProduct.length - 1) { requestAnimationFrame(this.renderStory) }
         console.log(this.props.finalProduct[this.i]);
         this.write(this.props.finalProduct[this.i])
-        this.xPosition += 8;
+        this.xPosition += 15;
         this.i++
     }
 
     write = (letter) => {
         const ctx = this.resultCanvas.getContext('2d');
         if (this.i === 0) {
-            ctx.font = "30px floralCapitals";
+            ctx.font = "20pt appFont";
         } else {
-            ctx.font = "30px crawley"
+            ctx.font = "20pt appFont"
         }
         if (letter === '.' || letter === ',') {
             ctx.fillText(letter, this.xPosition, this.yPosition);
-            this.yPosition += 40;
+            this.yPosition += 30;
             this.xPosition = 10;
         } else {
             ctx.fillText(letter, this.xPosition, this.yPosition);
