@@ -79,7 +79,7 @@ class Login extends Component {
 
                         <div className="btn-holder" onClick={this.login}>
                             <div className="button">
-                                <p className="btnText">LOG IN</p>
+                                <p className="btnText">LOG-IN</p>
                                 <div className="btnTwo">
                                     <p className="btnText2">
                                         <div className="login-img"></div>
@@ -97,7 +97,7 @@ class Login extends Component {
 
                         <div className="btn-holder" onClick={this.signUp}>
                             <div className="button">
-                                <p className="btnText">SING UP</p>
+                                <p className="btnText">SIGN-UP</p>
                                 <div className="btnTwo">
                                     <p className="btnText2">
                                         <div className="sing-img"></div>
